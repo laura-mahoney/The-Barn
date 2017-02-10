@@ -1,0 +1,7 @@
+Requirement already satisfied: flask_sqlalchemy in /home/vagrant/src/Barn/env/lib/python2.7/site-packages
+Requirement already satisfied: SQLAlchemy in /home/vagrant/src/Barn/env/lib/python2.7/site-packages (from flask_sqlalchemy)
+Requirement already satisfied: Flask>=0.10 in /home/vagrant/src/Barn/env/lib/python2.7/site-packages (from flask_sqlalchemy)
+Requirement already satisfied: itsdangerous>=0.21 in /home/vagrant/src/Barn/env/lib/python2.7/site-packages (from Flask>=0.10->flask_sqlalchemy)
+Requirement already satisfied: Werkzeug>=0.7 in /home/vagrant/src/Barn/env/lib/python2.7/site-packages (from Flask>=0.10->flask_sqlalchemy)
+Requirement already satisfied: Jinja2>=2.4 in /home/vagrant/src/Barn/env/lib/python2.7/site-packages (from Flask>=0.10->flask_sqlalchemy)
+Requirement already satisfied: markupsafe in /home/vagrant/src/Barn/env/lib/python2.7/site-packages (from Jinja2>=2.4->Flask>=0.10->flask_sqlalchemy)

@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Login</h1>
+
+<form method="POST">
+    Enter your email:
+    <br>
+    <input type="text" name="email"><br>
+    <br>
+    Enter your password:
+    <br>
+    <input type="text" name="password"><br>
+    <br>
+    <input type="submit">
+
+</form>
+
+
+{% endblock %}
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>The Barn</title>
+</head>
+<body>
+<script>
+      window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '692640927564598',
+      xfbml      : true,
+      version    : 'v2.8'
+    });
+    FB.AppEvents.logPageView();
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+  FB.getLoginStatus(function(response) {
+  if (response.status === 'connected') {
+    console.log('Logged in.');
+  }
+  else {
+    FB.login();
+  }
+});
+
+</script>
+<h1>Welcome</h1>
+<h2>Login</h2>
+  <form method="POST">
+      Enter your email:
+      <br>
+      <input type="text" name="email"><br>
+      <br>
+      Enter your password:
+      <br>
+      <input type="text" name="password"><br>
+      <br>
+      <input type="submit">
+</form>
+</body>
+</html> -->
