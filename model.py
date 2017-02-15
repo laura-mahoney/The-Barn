@@ -114,10 +114,42 @@ class Dogshift(db.Model):
     notes = db.Column(db.String(3000), nullable=False)
 
 
+class Activities(db.Model):
+    """Creates an activities object for tracking activities as boolean data"""
 
+    __tablename__ = "activities"
 
+    def __repr__(self):
+        return "<Shift ID: shift_id=%s Dog ID: dog_id=%s>" % (self.shift_id, self.dog_id)
 
+    shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
+    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
+    dogmountain = db.Column(db.Integer, default=False, nullable=True)
+    flirtpole = db.Column(db.Integer, default=False, nullable=True)
+    drills = db.Column(db.Integer, default=False, nullable=True)
+    walkonleash = db.Column(db.Integer, default=False, nullable=True)
+    pushups = db.Column(db.Integer, default=False, nullable=True)
+    fetch = db.Column(db.Integer, default=False, nullable=True)
 # Helper functions
+
+
+class Commands(db.Model):
+    """ Creates a commands object for tracking command skill progress on a scale from 1 to 5"""
+
+    __tablename__ = "commands"
+
+    def __repr__(self):
+        return "<Shift ID: shift_id=%s Dog ID: dog_id=%s>" % (self.shift_id, self.dog_id)
+
+    shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
+    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
+    wait = db.Column(db.Integer, nullable=True)
+    sit = db.Column(db.Integer, nullable=True)
+    down = db.Column(db.Integer, nullable=True)
+    drop = db.Column(db.Integer, nullable=True)
+    leaveit = db.Column(db.Integer, nullable=True)
+    shake = db.Column(db.Integer, nullable=True)
+    stay = db.Column(db.Integer, nullable=True)
 
 def init_app():
     # Makes flask app to use Flask-SQLAlchemy.

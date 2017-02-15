@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Add Shift Notes</h1><br>
+
+<form action="/addnotes" method="POST">
+    <input type="text" name="notes"><br>
+    <select name="Shift Type">
+        <option value="">Morning</option>
+        <option value="">Evening</option>
+    </select>
+    <input type="submit" value="Add Shift Notes"><br>
+</form>
+
+
+<h1>Add Dog-Specific Notes</h1>
+<br>
+{% for pups in dogs %}
+  <div>
+  <a href="/dog/{{ pups.dog_id }}">{{ pups.dog_name }}</a>
+  </div><br>
+{% endfor %}
+
+
+{% endblock %}

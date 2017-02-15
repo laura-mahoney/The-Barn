@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+     
+{% if "crew_id" in session %}
+    <a href="/logout">Logout</a><br>
+{% else %}
+    <a href="/sign_in">Sign In</a>
+{% endif %}
+
+{% for flash in get_flashed_messages() %}
+  {{ flash }}
+{% endfor %}
+
+{% block content %}
+    Put your body here.
+{% endblock %}
+
+</body>
+</html>
+
+
+
+ 

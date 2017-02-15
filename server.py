@@ -5,7 +5,8 @@ from flask_assets import Environment
 from requests_oauthlib import OAuth2Session
 from requests_oauthlib.compliance_fixes import facebook_compliance_fix
 from jinja2 import StrictUndefined 
-from model import connect_to_db, db, Barncrew, Kennel
+from model import connect_to_db, db, Barncrew, Kennel, Dog, Shift
+import jinja2
 
 """ facebook authentication """
 
@@ -22,6 +23,8 @@ from model import connect_to_db, db, Barncrew, Kennel
 # os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 app = Flask(__name__)
+
+app.secret_key = "hghghghg"
 
 # assets = Environment(app)
 
@@ -89,13 +92,14 @@ def register_process():
     email = request.form["email"]
     password = request.form["password"]
 
+
     new_crew = Barncrew(email=email, password=password)
 
     db.session.add(new_crew)
     db.session.commit()
 
     flash("You've been added to The Barn Crew!")
-    return redirect("/")
+    return redirect("/sign_in")
 
 
 
@@ -113,22 +117,34 @@ def sign_in_process():
 
     email = request.form["email"]
     password = request.form["password"]
-
+    
     crew = Barncrew.query.filter_by(email=email).first()
 
     if not crew:
         flash("Barncrew member does not exist.")
-        return redirect("/register")
+        return redirect("/sign_in")
 
     if crew.password != password:
         flash("Incorrect password")
         return redirect("/sign_in")
 
     session["crew_id"] = crew.crew_id
+    # Barncrew.query.get(session["crew_id"])
+
+    dogs = db.session.query(Dog.dog_name).all()
 
     flash("Logged in")
-    return redirect("/barn/%s" % crew.crew_id)
+    return render_template("barn.html", crew=crew, dogs=dogs)
 
+@app.route('/thebarn')
+def loggedin():
+    """returns the barn homepage when a user is already logged in"""
+
+    crew = Barncrew.query.get(session['crew_id'])
+
+    dogs = db.session.query(Dog.dog_name).all()
+
+    return render_template("barn.html", crew=crew, dogs=dogs)
 
 
 @app.route('/logout')
@@ -141,6 +157,53 @@ def logout():
 
 
 
+@app.route('/addnotes', methods=['GET'])
+def add_notes():
+    """opens page to add general notes about the barn"""
+
+    dogs = db.session.query(Dog).all()
+
+    return render_template("addnotes.html", dogs=dogs)
+
+
+@app.route('/addnotes', methods=['POST'])
+def post_notes():
+    """submits general notes about the barn"""
+
+    date_time = '01-Jan-2016'
+    duration = '3 hours'
+    notes = request.form["notes"]
+
+    new_notes = Shift(notes=notes, date_time=date_time, duration=duration)
+    
+    crew = Barncrew.query.get(session['crew_id'])
+    dogs = db.session.query(Dog.dog_name).all()
+
+    db.session.add(new_notes)
+    db.session.commit()
+
+    flash("You've added general barn notes!")
+    return render_template("barn.html", crew=crew, dogs=dogs)
+
+
+@app.route("/dog/<int:dog_id>", methods=['GET'])
+def user_detail(dog_id):
+    """Show info about dog."""
+
+    dog = Dog.query.get(dog_id)
+    crew = Barncrew.query.get(session['crew_id'])
+
+    return render_template("dog.html", dog=dog, crew=crew)
+
+
+# @app.route("/dog/<int:dog_id>", methods=['POST'])
+# def user_detail(dog_id):
+#     """Submit info about dog."""
+
+#     pass
+
+
+
 
 if __name__ == '__main__':
 
@@ -150,7 +213,7 @@ if __name__ == '__main__':
 
     connect_to_db(app)
 
-    DebugToolbarExtension(app)
+    # DebugToolbarExtension(app)
     
     app.run(host="0.0.0.0", port=5000, debug=True)
 
