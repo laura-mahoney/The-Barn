@@ -151,6 +151,23 @@ class Commands(db.Model):
     shake = db.Column(db.Integer, nullable=True)
     stay = db.Column(db.Integer, nullable=True)
 
+class Playmates(db.Model):
+    """creates play groups as objects out of dog friends"""
+    
+    __tablename__ = "playmates"
+
+    def __repr__(self):
+        return "<Shift ID: shift_id=%s Dog ID: dog_id=%s>" % (self.shift_id, self.dog_id)
+
+    shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
+    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
+    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
+    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
+    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
+    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
+
+
+
 def init_app():
     # Makes flask app to use Flask-SQLAlchemy.
     from flask import Flask

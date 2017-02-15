@@ -196,13 +196,18 @@ def user_detail(dog_id):
     return render_template("dog.html", dog=dog, crew=crew)
 
 
-# @app.route("/dog/<int:dog_id>", methods=['POST'])
-# def user_detail(dog_id):
-#     """Submit info about dog."""
+@app.route("/dog/<int:dog_id>", methods=['POST'])
+def user_detail(dog_id):
+    """Submit info about dog. NEED TO CONTINUE WORKING ON THIS ONE""" 
 
-#     pass
+    shift_id = self.shift_id #this shift ID
+    dog_id = self.dog_id #this dog_id
+    notes = request.form["notes"]
 
+    new_pupdate = Dogshift(shift_id=shift_id, dog_id=dog_id, notes=notes)
 
+    db.session.add(new_pupdate)
+    db.session.commit()
 
 
 if __name__ == '__main__':
