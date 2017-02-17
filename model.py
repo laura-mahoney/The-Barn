@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-"""ORM"""
+################### Barncrew, Positions, Dog, Kennel, Shift ###################
 
 class Barncrew(db.Model):
     """Creates Barn Crew Member"""
@@ -25,7 +25,6 @@ class Barncrew(db.Model):
 
 
 
-
 class Positions(db.Model):
 
     __tablename__="positions"
@@ -38,7 +37,7 @@ class Positions(db.Model):
 
 
 class Dog(db.Model):
-    """Creates Dog in the barn"""
+    """Creates dogs in the barn"""
     
     __tablename__ = "dog"
 
@@ -55,6 +54,7 @@ class Dog(db.Model):
     intake_date = db.Column(db.DateTime, nullable=False)
 
 
+    kennel = db.relationship('Kennel', backref='dogs')
 
 class Kennel(db.Model):
     """Prepares kennels for dogs"""
@@ -81,10 +81,11 @@ class Shift(db.Model):
 
     shift_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     date_time = db.Column(db.DateTime, nullable=False)
-    duration =db.Column(db.String(10), nullable=False)
-    notes =db.Column(db.String(3000), nullable=False)
+    duration = db.Column(db.String(10), nullable=False)
+    notes = db.Column(db.String(3000), nullable=False)
 
 
+################### Barn and Dog Shift Relationships ###################
 
 class Barncrewshift(db.Model):
     """Creates a shift/volunteer object"""
@@ -94,43 +95,50 @@ class Barncrewshift(db.Model):
     def __repr__(self):
         return "<Shift ID: shift_id=%s Crew ID: crew_id=%s>" % (self.shift_id, self.crew_id)
 
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
+    bc_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
     shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), nullable=False)
     crew_id = db.Column(db.Integer, db.ForeignKey("barncrew.crew_id"), nullable=False)
     mentor_id = db.Column(db.Integer, db.ForeignKey("barncrew.crew_id"), nullable=True)
 
 
+    bcshift = db.relationship('Shift', backref='crew')
+
 
 class Dogshift(db.Model):
-    """Creates a shift/dog object"""
+    """Creates a shift/dog object-about invididual dog during a specific shift"""
 
     __tablename__ = "dogshift"
 
     def __repr__(self):
         return "<Shift ID: shift_id=%s Dog ID: dog_id=%s>" % (self.shift_id, self.dog_id)
 
-    shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
+    dogshift_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
+    shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), nullable=False)
     dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
     notes = db.Column(db.String(3000), nullable=False)
 
 
+    dshift = db.relationship('Shift', backref='dog')
+
+
+################### Activities and Commands ###################
+
 class Activities(db.Model):
-    """Creates an activities object for tracking activities as boolean data"""
+    """Creates an activities object for tracking individual dog activities as boolean data"""
 
     __tablename__ = "activities"
 
     def __repr__(self):
         return "<Shift ID: shift_id=%s Dog ID: dog_id=%s>" % (self.shift_id, self.dog_id)
 
-    shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
-    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
+    activity_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
     dogmountain = db.Column(db.Integer, default=False, nullable=True)
     flirtpole = db.Column(db.Integer, default=False, nullable=True)
     drills = db.Column(db.Integer, default=False, nullable=True)
     walkonleash = db.Column(db.Integer, default=False, nullable=True)
     pushups = db.Column(db.Integer, default=False, nullable=True)
     fetch = db.Column(db.Integer, default=False, nullable=True)
-# Helper functions
+
 
 
 class Commands(db.Model):
@@ -139,10 +147,9 @@ class Commands(db.Model):
     __tablename__ = "commands"
 
     def __repr__(self):
-        return "<Shift ID: shift_id=%s Dog ID: dog_id=%s>" % (self.shift_id, self.dog_id)
+        return "<Commands ID: commands_id=%s>" % (self.commands_id)
 
-    shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
-    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
+    commands_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
     wait = db.Column(db.Integer, nullable=True)
     sit = db.Column(db.Integer, nullable=True)
     down = db.Column(db.Integer, nullable=True)
@@ -151,20 +158,51 @@ class Commands(db.Model):
     shake = db.Column(db.Integer, nullable=True)
     stay = db.Column(db.Integer, nullable=True)
 
-class Playmates(db.Model):
+
+################### DogShift Activities and Commands ###################
+
+class Dogshiftcommands(db.Model):
+    """Links a dog to commands learned during a specific shift"""
+
+    __tablename__ = "dogshiftcommands"
+    
+    def __repr__(self):
+        return "<DSCommands ID: dscommands_id=%s>" % (self.dscommands_id)
+
+    dscommands_id = db.Column(db.Integer, primary_key=True)
+    commands_id = db.Column(db.Integer, db.ForeignKey('commands.commands_id'), nullable=False)
+    dogshift_id = db.Column(db.Integer, db.ForeignKey("dogshift.dogshift_id"), nullable=False)
+    score = db.Column(db.Integer, nullable=True)
+
+
+
+class Dogshiftactivities(db.Model):
+    """ """
+
+    __tablename__ = "dogshiftactivities"
+    
+    def __repr__(self):
+        return "<DSActivities ID: dsactivities_id=%s>" % (self.dsactivities_id)
+
+    dsactivities_id = db.Column(db.Integer, primary_key=True, nullable=False)
+    activity_id = db.Column(db.Integer, db.ForeignKey("activities.activity_id"), nullable=True)
+    dogshift_id = db.Column(db.Integer, db.ForeignKey("dogshift.dogshift_id"), nullable=False)
+
+
+
+################### Dogplaymates ###################
+
+class Dogplaymates(db.Model):
     """creates play groups as objects out of dog friends"""
     
-    __tablename__ = "playmates"
+    __tablename__ = "dogplaymates"
 
     def __repr__(self):
-        return "<Shift ID: shift_id=%s Dog ID: dog_id=%s>" % (self.shift_id, self.dog_id)
+        return "<Dog ID: dog_id=%s Playmate: play_mate=%s>" % (self.dog_id, self.play_mate)
 
     shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
     dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
-    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
-    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
-    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
-    dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
+    play_mate = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
 
 
 
@@ -176,6 +214,8 @@ def init_app():
     connect_to_db(app)
     print "Connected to The Barn DB."
 
+
+
 def connect_to_db(app):
     """Connect the database to Flask app."""
 
@@ -186,8 +226,13 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
+
+
 def check_crew(email, password):
     pass
+
+
+
 
 if __name__ == "__main__":
   

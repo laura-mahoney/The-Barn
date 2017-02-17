@@ -10,6 +10,10 @@ Age: {{ dog.age }}<br>
 Intake Date: {{ dog.intake_date }}<br>
 Playmates: <br>
 <br>
+
+
+
+
 <!-- the form will submit data to database about the dogs activities per shift -->
 <form action="/dog/<int:dog_id>" method="POST">
     {{ dog.dog_name }}'s Skills:<br>
@@ -43,16 +47,18 @@ Playmates: <br>
 
     Stay<input type="radio" name="stay" value="1">1<input type="radio" name="stay" value="2">2<input type="radio" name="stay" value="3">3<input type="radio" name="stay" value="4">4<input type="radio" name="stay" value="5">5<br>
     <br>
-    Playmates<br>
-    <input type="text" name="pupdatetext">
+
+    Playmates-Coming Soon<br>
+    <br>
+    <br>
+    <input type="text" name="pupdatenotes">
+    <br>
     <input type="submit" value="pupdate">
     <br>
-    
+    <input type="text" name="shift-id" value={{ shift_id }} hidden>
 </form>
 
-<script>
-
-</script>
+<script src="/static/js/dog-shift.js"></script>
 
 {% endblock %}
 

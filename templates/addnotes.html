@@ -1,24 +1,84 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Add Shift Notes</h1><br>
 
-<form action="/addnotes" method="POST">
+<h1>Add Dog-Specific Notes</h1>
+<br>
+{% for dog in dogs %}
+  <div>
+  <p class="dogNames" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
+  </div><br>
+  <div class="dogForm" id="{{ dog.dog_id }}">
+<!-- this page will provide a form for daily shift entries, the intake information will eventually include playmates -->
+{{ crew.fname }}, provide a pupdate for {{ dog.dog_name }}<br>
+Kennel ID: {{ dog.kennel_id }}<br>
+Breed: {{ dog.breed }}<br>
+Gender: {{ dog.gender }}<br>
+Altered: {{ dog.altered }}<br> 
+Age: {{ dog.age }}<br>
+Intake Date: {{ dog.intake_date }}<br>
+Playmates: <br>
+<br>
+
+
+<!-- the form will submit data to database about the dogs activities per shift -->
+<form action="/dog/<int:dog_id>" method="POST">
+    {{ dog.dog_name }}'s Skills:<br>
+    Activities<br>
+    <!-- type yes or no and give score -->
+    Dog Mountain: <input type="radio" name="dogmountain" value="yes">Yes<input type="radio" name="dogmountain" value="no">No<br>
+
+    Flirt Pole: <input type="radio" name="flirtpole" value="yes">Yes<input type="radio" name="flirtpole" value="no">No<br>
+
+    Drills: <input type="radio" name="drills" value="yes">Yes<input type="radio" name="drills" value="no">No<br>
+
+    Walk on Leash: <input type="radio" name="leash" value="yes">Yes<input type="radio" name="leash" value="no">No<br>
+
+    Push Ups: <input type="radio" name="pushups" value="yes">Yes<input type="radio" name="pushups" value="no">No<br>
+
+    Fetch: <input type="radio" name="fetch" value="yes">Yes<input type="radio" name="fetch" value="no">No<br>
+    <br>
+    Commands<br>How well does {{ dog.dog_name }} know{% if dog.gender=='Female' %} her {% else %} his {% endif %}manners:<br>
+    <!-- give score between 1 and 5 -->
+    Wait<input type="radio" name="wait" value="1">1<input type="radio" name="wait" value="2">2<input type="radio" name="wait" value="3">3<input type="radio" name="wait">4<input type="radio" name="wait" value="5">5<br>
+
+    Sit<input type="radio" name="sit" value="1">1<input type="radio" name="sit" value="2">2<input type="radio" name="sit" value="3">3<input type="radio" name="sit" value="4">4<input type="radio" name="sit" value="5">5<br>
+
+    Down<input type="radio" name="down" value="1">1<input type="radio" name="down" value="2">2<input type="radio" name="down" value="3">3<input type="radio" name="down" value="4">4<input type="radio" name="down" value="5">5<br>
+
+    Drop<input type="radio" name="drop" value="1">1<input type="radio" name="drop" value="2">2<input type="radio" name="drop" value="3">3<input type="radio" name="drop" value="4">4<input type="radio" name="drop" value="5">5<br>
+
+    Leave It<input type="radio" name="leaveit" value="1">1<input type="radio" name="leaveit" value="2">2<input type="radio" name="leaveit" value="3">3<input type="radio" name="leaveit" value="4">4<input type="radio" name="leaveit" value="5">5<br>
+
+    Shake<input type="radio" name="shake" value="1">1<input type="radio" name="shake" value="2">2<input type="radio" name="shake" value="3">3<input type="radio" name="shake" value="4">4<input type="radio" name="shake" value="5">5<br>
+
+    Stay<input type="radio" name="stay" value="1">1<input type="radio" name="stay" value="2">2<input type="radio" name="stay" value="3">3<input type="radio" name="stay" value="4">4<input type="radio" name="stay" value="5">5<br>
+    <br>
+
+    Playmates-Coming Soon<br>
+    <br>
+    <br>
+    <input type="text" name="pupdatenotes">
+    <br>
+    <input type="submit" value="pupdate">
+    <br>
+    <input type="text" name="shift-id" hidden>
+</form>
+
+
+  </div>
+{% endfor %}
+
+<h1>Add General Notes</h1><br>
+
+<form action="/submitnotes" method="POST">
     <input type="text" name="notes"><br>
     <select name="Shift Type">
         <option value="">Morning</option>
         <option value="">Evening</option>
-    </select>
-    <input type="submit" value="Add Shift Notes"><br>
+    </select><br>
+    <input type="submit" value="Submit Shift Notes"><br>
 </form>
-
-
-<h1>Add Dog-Specific Notes</h1>
 <br>
-{% for pups in dogs %}
-  <div>
-  <a href="/dog/{{ pups.dog_id }}">{{ pups.dog_name }}</a>
-  </div><br>
-{% endfor %}
-
+<br>
 
 {% endblock %}
