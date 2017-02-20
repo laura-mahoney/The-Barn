@@ -244,3 +244,6 @@ if __name__ == "__main__":
     connect_to_db(app)
     print "Connected to The Barn DB."
 
+    # cascade="all, delete-orphan" add to foregin keys
+    # http://docs.sqlalchemy.org/en/latest/orm/cascades.html
+

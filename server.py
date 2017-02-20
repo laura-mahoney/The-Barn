@@ -28,6 +28,9 @@ app = Flask(__name__)
 
 app.secret_key = "hghghghg"
 
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
 # assets = Environment(app)
 
 app.jinja_env.undefined = StrictUndefined
@@ -161,7 +164,6 @@ def logout():
 def create_shift():
     """opens page to add general notes about the barn"""
     #shift is created here in the db, new shift created, shift id passed to jinja, pass in crew
-    print 'wooohooo'
     crew = Barncrew.query.get(session['crew_id'])
     dogs = db.session.query(Dog).all()
     
