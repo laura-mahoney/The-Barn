@@ -80,10 +80,10 @@ class Shift(db.Model):
         return "<Shift ID: shift_id=%s Date: date_time=%s>" % (self.shift_id, self.date_time)
 
     shift_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    date_time = db.Column(db.DateTime, nullable=False)
-    duration = db.Column(db.String(10), nullable=False)
-    notes = db.Column(db.String(3000), nullable=False)
-
+    date_time = db.Column(db.String(20), nullable=True)
+    duration = db.Column(db.String(10), nullable=True)
+    notes = db.Column(db.String(3000), nullable=True)
+""" I made these values nullable for now to focus on getting the shift_id submitting"""
 
 ################### Barn and Dog Shift Relationships ###################
 
@@ -129,7 +129,7 @@ class Activities(db.Model):
     __tablename__ = "activities"
 
     def __repr__(self):
-        return "<Shift ID: shift_id=%s Dog ID: dog_id=%s>" % (self.shift_id, self.dog_id)
+        return "<Activity ID: activity_id=%s>" % (self.activity_id)
 
     activity_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
     dogmountain = db.Column(db.Integer, default=False, nullable=True)

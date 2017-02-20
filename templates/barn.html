@@ -3,9 +3,14 @@
 
 Welcome {{ crew.fname }}
 
-<form action="/addnotes" method="GET">
+<form action="/addnotes" method="POST">
     <br>
-    <input type="submit" value="Create Shift"><br>
+    <select>
+        <option value="Morning" name="time">Morning</option>
+        <option value="Noon" name="time">Noon</option>
+        <option value="Evening" name="time">Evening</option>
+    </select>
+    <input type="submit" name="createshift" value="Create Shift"><br>
 </form>
 
 <form action="/calendar" method="GET">
@@ -14,9 +19,22 @@ Welcome {{ crew.fname }}
     <br>
 </form>
 
-{% for pups in dogs %}
-  <div>
-  <a href="{{ pups }}.jpg">{{ pups }}</a>
-  </div><br>
+{% for dog in dogs %}
+
+   <div>
+        <p class="dogProfile" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
+   </div>
+   <div class="dogIntakeProfile" id="{{ dog.dog_id }}" style="display: none;"><br>
+Name: {{ dog.dog_name }}<br>
+Kennel ID: {{ dog.kennel_id }}<br>
+Breed: {{ dog.breed }}<br>
+Gender: {{ dog.gender }}<br>
+Altered: {{ dog.altered }}<br> 
+Age: {{ dog.age }}<br>
+Intake Date: {{ dog.intake_date }}<br>
+Playmates: <br>
+    </div>
+</form>
+
 {% endfor %}
 {% endblock %}

@@ -5,27 +5,18 @@
 <br>
 <script src="https://code.jquery.com/jquery.js" type="text/javascript"></script>
 <script src="/static/js/dog-shift.js" type="text/javascript"></script>
-
+Shift ID: {{ shift_id }}
 
 {% for dog in dogs %}
   <div>
   <p class="dogNames" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
-  </div><br>
+  </div>
   <div class="dogForm" id="{{ dog.dog_id }}" style="display: none;">
 <!-- this page will provide a form for daily shift entries, the intake information will eventually include playmates -->
 {{ crew.fname }}, provide a pupdate for {{ dog.dog_name }}<br>
-Kennel ID: {{ dog.kennel_id }}<br>
-Breed: {{ dog.breed }}<br>
-Gender: {{ dog.gender }}<br>
-Altered: {{ dog.altered }}<br> 
-Age: {{ dog.age }}<br>
-Intake Date: {{ dog.intake_date }}<br>
-Playmates: <br>
-<br>
-
 
 <!-- the form will submit data to database about the dogs activities per shift -->
-<form action="/dog/<int:dog_id>" method="POST">
+<form id="pupdateForm" action="/dog/notes" method="POST">
     {{ dog.dog_name }}'s Skills:<br>
     Activities<br>
     <!-- type yes or no and give score -->
@@ -62,12 +53,11 @@ Playmates: <br>
     <br>
     <input type="text" name="pupdatenotes">
     <br>
-    <input type="submit" value="pupdate">
+    <input type="submit" value="sendpupdate">
     <br>
-    <input type="text" name="shift-id">
+    <input type="hidden" name="shift-id" value={{ shift_id }}>
+    <input type="hidden" name="dog-id" value={{ dog.dog_id }}>
 </form>
-
-
 </div>
 {% endfor %}
 
@@ -75,10 +65,7 @@ Playmates: <br>
 
 <form action="/submitnotes" method="POST">
     <input type="text" name="notes"><br>
-    <select name="Shift Type">
-        <option value="">Morning</option>
-        <option value="">Evening</option>
-    </select><br>
+    <br>
     <input type="submit" value="Submit Shift Notes"><br>
 </form>
 <br>

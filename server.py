@@ -5,7 +5,7 @@ from flask_assets import Environment
 from requests_oauthlib import OAuth2Session
 from requests_oauthlib.compliance_fixes import facebook_compliance_fix
 from jinja2 import StrictUndefined 
-from model import connect_to_db, db, Barncrew, Kennel, Dog, Shift, Activities, Commands, Dogshiftcommands, Dogshiftactivities, Dogplaymates
+from model import connect_to_db, db, Barncrew, Kennel, Dog, Shift, Activities, Commands, Dogshiftcommands, Dogshiftactivities, Dogplaymates, Dogshift
 import jinja2
 import json 
 from datetime import datetime
@@ -136,7 +136,7 @@ def sign_in_process():
     session["crew_id"] = crew.crew_id
     # Barncrew.query.get(session["crew_id"])
 
-    dogs = db.session.query(Dog.dog_name).all()
+    dogs = db.session.query(Dog).all()
 
     flash("Logged in")
     return render_template("barn.html", crew=crew, dogs=dogs)
@@ -145,7 +145,8 @@ def sign_in_process():
 def logged_in():
     """returns the barn homepage when a user is already logged in"""
     crew = Barncrew.query.get(session['crew_id'])
-    dogs = db.session.query(Dog.dog_name).all()
+    # dogs = db.session.query(Dog.dog_name).all()
+    dogs = db.session.query(Dog).all()
 
     return render_template("barn.html", crew=crew, dogs=dogs)
 
@@ -160,7 +161,7 @@ def logout():
 
 
 
-@app.route('/addnotes', methods=['GET'])
+@app.route('/addnotes', methods=['POST'])
 def create_shift():
     """opens page to add general notes about the barn"""
     #shift is created here in the db, new shift created, shift id passed to jinja, pass in crew
@@ -168,11 +169,11 @@ def create_shift():
     dogs = db.session.query(Dog).all()
     
     notes = 'notes'
-    date_time = '01-Jan-2016'
-    duration = '3 hours'
+    date_time = request.form.get("time")
+    # duration = request.form.get["duration"]
 
 
-    new_shift = Shift(notes=notes, date_time=date_time, duration=duration)
+    new_shift = Shift(notes=notes, date_time=date_time)
     db.session.add(new_shift)
     db.session.commit()
 
@@ -180,15 +181,47 @@ def create_shift():
 
 
 
-# @app.route("/dog/<int:dog_id>", methods=['GET'])
-# def dog_form(dog_id):
-#     """Show info about dog and provides form for entry."""
+@app.route("/dog/notes", methods=['POST'])
+def dog_form():
+    """Gathers info about a dog from form and sends to database."""
 
-#     dog = Dog.query.get(dog_id)
-#     crew = Barncrew.query.get(session['crew_id'])
-#     shift_id = request.args["shift_id"]
+    # dog = Dog.query.get(dog_id)
+    crew = Barncrew.query.get(session['crew_id'])
+    dog_id = request.form.get("dog-id")
+    shift_id = request.form.get("shift-id")
+    notes = request.form.get("pupdatenotes")
 
-#     return render_template("dog.html", dog=dog, crew=crew, shift_id=shift_id)
+    dogmountain = request.form.get("dogmountain")
+    flirtpole = request.form.get("flirtpole")
+    drills = request.form.get("drills")
+    walkonleash = request.form.get("leash")
+    pushups = request.form.get("pushups")
+    fetch = request.form.get("fetch")
+
+    wait = request.form.get("wait")
+    sit = request.form.get("sit")
+    down = request.form.get("down")
+    drop = request.form.get("drop")
+    leaveit = request.form.get("leaveit")
+    shake = request.form.get("shake")
+    stay = request.form.get("stay")
+
+
+    new_notes = Dogshift(shift_id=shift_id, dog_id=dog_id, notes=notes)
+
+
+    new_activity = Activities(dogmountain=dogmountain, flirtpole=flirtpole, drills=drills,
+                            walkonleash=walkonleash, pushups=pushups, fetch=fetch)
+
+    new_command = Commands(wait=wait, sit=sit, down=down, drop=drop, leaveit=leaveit,
+                            shake=shake, stay=stay)
+
+    db.session.add(new_notes)
+    db.session.add(new_activity)
+    db.session.add(new_command)
+    db.session.commit()
+
+    return 'Notes successfully added'
 
 
 
@@ -212,31 +245,31 @@ def create_shift():
 
 
 
-@app.route("/dog/<int:dog_id>/notes", methods=['POST'])
-def add_dog_notes(dog_id):
-    """Submit info about dog. NEED TO CONTINUE WORKING ON THIS ONE""" 
-    """Adding notes about the specific dog during this shift, ajax posts"""
+# @app.route("/dog/<int:dog_id>/notes", methods=['POST'])
+# def add_dog_notes(dog_id):
+#     """Submit info about dog. NEED TO CONTINUE WORKING ON THIS ONE""" 
+#     """Adding notes about the specific dog during this shift, ajax posts"""
     
-    shift_id = request.form["shift-id"]
-    dog_id = Dog.query.get(dog_id)
-    notes = request.form["pupdatenotes"]
+#     shift_id = request.form["shift-id"]
+#     dog_id = Dog.query.get(dog_id)
+#     notes = request.form["pupdatenotes"]
     
 
-    dogmountain=request.form["dogmountain"]
-    flirtpole=request.form["flirtpole"]
+#     dogmountain=request.form["dogmountain"]
+#     flirtpole=request.form["flirtpole"]
 
 
-    new_notes = Dogshift(shift_id=shift_id, dog_id=dog_id, notes=notes)
+#     new_notes = Dogshift(shift_id=shift_id, dog_id=dog_id, notes=notes)
 
-    """Adding notes about a specific dog's activities for that shift"""
-    new_activity = Activities(dogmountain=dogmountain,flirtpole=flirtpole, 
-                                drills=drills, walkonleash=walkonleash,
-                                pushups=pushups, fetch=fetch)
-    new_command = Commands(wait=wait, sit=sit, down=down, drop=drop, leaveit=leaveit, shake=shake,
-                            stay=stay)
+#     """Adding notes about a specific dog's activities for that shift"""
+#     new_activity = Activities(dogmountain=dogmountain,flirtpole=flirtpole, 
+#                                 drills=drills, walkonleash=walkonleash,
+#                                 pushups=pushups, fetch=fetch)
+#     new_command = Commands(wait=wait, sit=sit, down=down, drop=drop, leaveit=leaveit, shake=shake,
+#                             stay=stay)
 
-    db.session.add(new_notes, new_pupdate, new_activity, new_command)
-    db.session.commit()
+#     db.session.add(new_notes, new_pupdate, new_activity, new_command)
+#     db.session.commit()
 
 
 
