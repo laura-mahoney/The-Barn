@@ -185,9 +185,10 @@ def create_shift():
 def dog_form():
     """Gathers info about a dog from form and sends to database."""
 
-    # dog = Dog.query.get(dog_id)
+    
     crew = Barncrew.query.get(session['crew_id'])
     dog_id = request.form.get("dog-id")
+    dog = Dog.query.get(dog_id)
     shift_id = request.form.get("shift-id")
     notes = request.form.get("pupdatenotes")
 
@@ -216,68 +217,31 @@ def dog_form():
     new_command = Commands(wait=wait, sit=sit, down=down, drop=drop, leaveit=leaveit,
                             shake=shake, stay=stay)
 
+
     db.session.add(new_notes)
     db.session.add(new_activity)
     db.session.add(new_command)
     db.session.commit()
 
+    # new_dogshiftact = Dogshiftactivities(activity_id=)
+
+    # new_dogshiftcom = Dogshiftcommands()
+
+    # db.session.add(new_dogshiftact)
+    # db.session.add(new_dogshiftcom)
+
     return 'Notes successfully added'
-
-
-
-# #creating a new shift, including new shift_id jsonified in response
-# @app.route('/new_shift.json', methods=['POST'])
-# def create_new_shift():
-
-#     date_time = '01-Jan-2016'
-#     duration = '3 hours'
-#     notes = request.form["notes"]
-
-    
-#     crew = Barncrew.query.get(session['crew_id'])
-#     dogs = db.session.query(Dog.dog_name).all()
-
-#     db.session.add(new_shift)
-#     db.session.commit()
-
-#     #return jsonify with shift id for use in dictionary 
-#     return jsonify(new_shift.shift_id)
-
-
-
-# @app.route("/dog/<int:dog_id>/notes", methods=['POST'])
-# def add_dog_notes(dog_id):
-#     """Submit info about dog. NEED TO CONTINUE WORKING ON THIS ONE""" 
-#     """Adding notes about the specific dog during this shift, ajax posts"""
-    
-#     shift_id = request.form["shift-id"]
-#     dog_id = Dog.query.get(dog_id)
-#     notes = request.form["pupdatenotes"]
-    
-
-#     dogmountain=request.form["dogmountain"]
-#     flirtpole=request.form["flirtpole"]
-
-
-#     new_notes = Dogshift(shift_id=shift_id, dog_id=dog_id, notes=notes)
-
-#     """Adding notes about a specific dog's activities for that shift"""
-#     new_activity = Activities(dogmountain=dogmountain,flirtpole=flirtpole, 
-#                                 drills=drills, walkonleash=walkonleash,
-#                                 pushups=pushups, fetch=fetch)
-#     new_command = Commands(wait=wait, sit=sit, down=down, drop=drop, leaveit=leaveit, shake=shake,
-#                             stay=stay)
-
-#     db.session.add(new_notes, new_pupdate, new_activity, new_command)
-#     db.session.commit()
 
 
 
 @app.route('/submitnotes', methods=['POST'])
 def post_notes():
-    """submits general notes about the barn"""
+    """submits general notes about the barn by updating the shift that has already been created"""
     crew = Barncrew.query.get(session['crew_id'])
     dogs = db.session.query(Dog.dog_name).all()
+    
+    shift = Shift.query.get()
+
 
     flash("You've added general barn notes!")
     return render_template("barn.html", crew=crew, dogs=dogs)

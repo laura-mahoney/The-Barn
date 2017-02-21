@@ -132,12 +132,12 @@ class Activities(db.Model):
         return "<Activity ID: activity_id=%s>" % (self.activity_id)
 
     activity_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
-    dogmountain = db.Column(db.Integer, default=False, nullable=True)
-    flirtpole = db.Column(db.Integer, default=False, nullable=True)
-    drills = db.Column(db.Integer, default=False, nullable=True)
-    walkonleash = db.Column(db.Integer, default=False, nullable=True)
-    pushups = db.Column(db.Integer, default=False, nullable=True)
-    fetch = db.Column(db.Integer, default=False, nullable=True)
+    dogmountain = db.Column(db.String(20), default=False, nullable=True)
+    flirtpole = db.Column(db.String(20), default=False, nullable=True)
+    drills = db.Column(db.String(20), default=False, nullable=True)
+    walkonleash = db.Column(db.String(20), default=False, nullable=True)
+    pushups = db.Column(db.String(20), default=False, nullable=True)
+    fetch = db.Column(db.String(20), default=False, nullable=True)
 
 
 

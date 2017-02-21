@@ -67,60 +67,54 @@ $(".dogNames").on("click", showDogForm);
 
 
 
-// this function adds form data/pupdates to the database
+// ///////////this function adds form data/pupdates to the database
 function pupdateSuccess(){
-    flash('Successfully Updated!');
+    console.log('Successfully Updated!');
 }
 
 function addPupdates(evt){
     evt.preventDefault();
 
-    var dogInput = {
-        "dogmountain": $("#dogmountain").val(),
-        "flirtpole": $("#flirtpole").val(),
-        "drills": $("#drills").val(),
-        "leash": $("#leash").val(),
-        "pushups": $("#pushups").val(),
-        "fetch": $("#fetch").val(),
-        "wait": $("#wait").val(),
-        "sit": $("#sit").val(),
-        "down": $("#down").val(),
-        "drop": $("#drop").val(),
-        "leaveit": $("#leaveit").val(),
-        "shake": $("#shake").val(),
-        "stay": $("#stay").val(),
-        "pupdatenotes": $("pupdatenotes").val(),
-        "shift-id": $("shift-id").val(),
-        "dog-id": $("dog-id").val()
-    };
+    var dogInput = $(this).serializeArray();
+    // console.log(dogInput);
 
-    $.post("/dog/notes", dogInput, pupdateSuccess);
+    // debugger;
+
+    var dogData = {};
+
+    for(var i = 0; i<dogInput.length; i++){
+        dogData[dogInput[i].name] = dogInput[i].value;
+        // debugger;
+        // console.log(dogInput[i]);
+    };
+    // console.log(dogData);
+
+    $.post("/dog/notes", dogData, pupdateSuccess);
 
     // dogData.append(dogInput);
     // console.log(dogData);
-}
+};
 
 $("#pupdateForm").submit(addPupdates);
 
-// function addPupdates(results){
-//     var status = results;
-//     ("#pupdateForm")
-// }
 
 
-// function sendPupdate(){
 
-//     $.get("#pupdateForm").submit(function(evt){
-//     var values = $(this).serialize();
-//     dogData.append(values);
-//     console.log(dogData);
-// })
+// /////////////////this function will submit general notes for the shift to the database
+function noteSuccess(){
+    console.log('General notes added for this shift.');
+};
 
+function submitShiftNotes(evt){
+    evt.preventDefault();
+    
+    var generalNotes = $(this).serializeArray();
 
-// $("#pupdateForm").on('click', addPupdates);
+    $.post("/submitnotes", generalNotes, noteSuccess);
+};
+    
+$("#generalNotes").submit(submitShiftNotes);
 
-// this function will submit general notes for the shift to the database
-// function submitShiftNotes()
 
 });
 
