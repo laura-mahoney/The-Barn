@@ -81,9 +81,9 @@ class Shift(db.Model):
 
     shift_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     date_time = db.Column(db.String(20), nullable=True)
-    duration = db.Column(db.String(10), nullable=True)
+    duration = db.Column(db.String(20), nullable=True)
     notes = db.Column(db.String(3000), nullable=True)
-""" I made these values nullable for now to focus on getting the shift_id submitting"""
+""" General notes will remain null because they don't get added until the submit button gets hit"""
 
 ################### Barn and Dog Shift Relationships ###################
 

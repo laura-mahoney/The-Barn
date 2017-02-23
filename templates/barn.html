@@ -5,11 +5,23 @@
 
 <form action="/addnotes" method="POST">
     <br>
-    <select>
-        <option value="Morning" name="time">Morning</option>
-        <option value="Noon" name="time">Noon</option>
-        <option value="Evening" name="time">Evening</option>
-    </select>
+    <div id="shiftTime">
+        <select name="time_day">
+            <option value="Time" name="time">Time</option>
+            <option value="Morning" name="time">Morning</option>
+            <option value="Noon" name="time">Noon</option>
+            <option value="Evening" name="time">Evening</option>
+        </select>
+    </div>
+    <div id="shiftDuration">
+        <select name="duration_shift">
+            <option value="Duration" name="duration">Duration</option>
+            <option value="1 hour" name="duration">1 hour</option>
+            <option value="2 hours" name="duration">2 hours</option>
+            <option value="3 hours" name="duration">3 hours</option>
+            <option value="4 hours" name="duration">4 hours</option>
+        </select>
+    </div>
     <input type="submit" name="createshift" value="Create Shift"><br>
 </form>
 
@@ -25,6 +37,7 @@
         <p class="dogProfile" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
    </div>
    <div class="dogIntakeProfile" id="{{ dog.dog_id }}" style="display: none;"><br>
+   <a href= "src/TheBarn/static">dog.dog_name.jpg</a>
 Name: {{ dog.dog_name }}<br>
 Kennel ID: {{ dog.kennel_id }}<br>
 Breed: {{ dog.breed }}<br>

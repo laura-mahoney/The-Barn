@@ -29,19 +29,27 @@ $(".dogProfile").on("click", showIntakeData);
 
 
 
-// this function creates a shift when button is hit
-function createShift(evt){
-    evt.preventDefault();
+// this function creates a shift when button is hit, now it needs to send time
+// and duration to the server
+// function successShift(){
+//     console.log('Shift successfully created');
+// }
 
-    var shiftData = {
-        "time": $("#time").val()
-    }
+// function createShift(evt){
+//     evt.preventDefault();
 
-    $.post("/addnotes", shiftData);
+//     var shiftData = {
+//         "time": $("#shiftTime").attr('value'),
+//         "duration": $("#shiftDuration").attr('value')
+//     };
+//     console.log(shiftData);
+//     debugger;
 
-}
+//     $.post("/addnotes", shiftData, successShift);
 
-$("#createshift").on("click", createShift);
+// }
+
+// $("#createshift").on("click", createShift);
 
 
 
@@ -69,16 +77,17 @@ $(".dogNames").on("click", showDogForm);
 
 // ///////////this function adds form data/pupdates to the database
 function pupdateSuccess(){
-    console.log('Successfully Updated!');
+    $('.dogForm').hide();
+    console.log('Successfully Pupdated!');
 }
 
 function addPupdates(evt){
     evt.preventDefault();
 
     var dogInput = $(this).serializeArray();
-    // console.log(dogInput);
+    console.log(dogInput);
 
-    // debugger;
+    debugger;
 
     var dogData = {};
 
@@ -89,31 +98,34 @@ function addPupdates(evt){
     };
     // console.log(dogData);
 
-    $.post("/dog/notes", dogData, pupdateSuccess);
+    $.post("/dog/notes.json", dogData, pupdateSuccess);
 
     // dogData.append(dogInput);
     // console.log(dogData);
 };
 
-$("#pupdateForm").submit(addPupdates);
+$(".pupdateForm").submit(addPupdates);
 
 
 
 
 // /////////////////this function will submit general notes for the shift to the database
-function noteSuccess(){
-    console.log('General notes added for this shift.');
-};
+// function noteSuccess(){
+//     console.log('General notes added for this shift.');
 
-function submitShiftNotes(evt){
-    evt.preventDefault();
-    
-    var generalNotes = $(this).serializeArray();
+// };
 
-    $.post("/submitnotes", generalNotes, noteSuccess);
-};
+// function submitShiftNotes(evt){
+//     evt.preventDefault();
     
-$("#generalNotes").submit(submitShiftNotes);
+//     var generalNotes = $(this).serializeArray();
+//     var data = {'generalNotes': generalNotes[0].value, 'shift_id': shift_id};
+
+
+//     $.post("/submitnotes", data, noteSuccess);
+// };
+    
+// $("#generalNotes").submit(submitShiftNotes);
 
 
 });

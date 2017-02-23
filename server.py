@@ -168,25 +168,31 @@ def create_shift():
     crew = Barncrew.query.get(session['crew_id'])
     dogs = db.session.query(Dog).all()
     
-    notes = 'notes'
-    date_time = request.form.get("time")
-    # duration = request.form.get["duration"]
+    date_time = request.form.get("time_day")
+    duration = request.form.get("duration_shift")
+    print date_time
+    print duration
 
 
-    new_shift = Shift(notes=notes, date_time=date_time)
+    new_shift = Shift(date_time=date_time, duration=duration)
     db.session.add(new_shift)
     db.session.commit()
+
+    session["shift_id"] = new_shift.shift_id #adding shift_id to session for later use
 
     return render_template("addnotes.html", dogs=dogs, crew=crew, shift_id=new_shift.shift_id)
 
 
 
-@app.route("/dog/notes", methods=['POST'])
+@app.route("/dog/notes.json", methods=['POST'])
 def dog_form():
     """Gathers info about a dog from form and sends to database."""
 
     
     crew = Barncrew.query.get(session['crew_id'])
+    # shift_id = Shift.query.get(session['shift_id']) #querying databse for shift_id stored in session
+
+
     dog_id = request.form.get("dog-id")
     dog = Dog.query.get(dog_id)
     shift_id = request.form.get("shift-id")
@@ -229,8 +235,9 @@ def dog_form():
 
     # db.session.add(new_dogshiftact)
     # db.session.add(new_dogshiftcom)
+    my_dictionary = {"message": "notes succesfully added"}
 
-    return 'Notes successfully added'
+    return jsonify(my_dictionary)
 
 
 
@@ -238,13 +245,20 @@ def dog_form():
 def post_notes():
     """submits general notes about the barn by updating the shift that has already been created"""
     crew = Barncrew.query.get(session['crew_id'])
-    dogs = db.session.query(Dog.dog_name).all()
-    
-    shift = Shift.query.get()
+    dogs = db.session.query(Dog).all()
+    shift_id = request.form.get('shift-id')
 
+    shift = Shift.query.get(shift_id)
+    shift.notes = request.form.get('notes')
+    
+    # shift_id = Shift.query.get(session['shift_id']) #querying databse for shift_id stored in session
+
+    db.session.commit()
 
     flash("You've added general barn notes!")
-    return render_template("barn.html", crew=crew, dogs=dogs)
+    return redirect("/thebarn")
+
+
 
 if __name__ == '__main__':
 
