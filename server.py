@@ -148,7 +148,11 @@ def logged_in():
     # dogs = db.session.query(Dog.dog_name).all()
     dogs = db.session.query(Dog).all()
 
-    return render_template("barn.html", crew=crew, dogs=dogs)
+    shift_id = Shift.query.all()
+
+    recent_notes = shift_id[-1].notes
+
+    return render_template("barn.html", crew=crew, dogs=dogs, recent_notes=recent_notes)
 
 
 @app.route('/logout')

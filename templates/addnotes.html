@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Add Dog-Specific Notes</h1>
+<h1>Add Pupdate</h1>
 <br>
 <script src="https://code.jquery.com/jquery.js" type="text/javascript"></script>
 Shift ID: {{ shift_id }}
@@ -48,13 +48,26 @@ Shift ID: {{ shift_id }}
     Stay<input type="radio" name="stay" value="1">1<input type="radio" name="stay" value="2">2<input type="radio" name="stay" value="3">3<input type="radio" name="stay" value="4">4<input type="radio" name="stay" value="5">5<br>
     <br>
 
-    Playmates-Coming Soon<br>
+    Playmates<br>
+    <div class="playmates">    
+        <select name="dog">
+            {% for dog in dogs %}
+                <option value="{{ dog.dog_name }}">{{ dog.dog_name }}</option>
+            {% endfor %}
+        </select>
+        <select name="dog">
+            {% for dog in dogs %}
+                <option value="{{ dog.dog_name }}">{{ dog.dog_name }}</option>
+            {% endfor %}
+        </select>
         <select name="dog">
             {% for dog in dogs %}
                 <option value="{{ dog.dog_name }}">{{ dog.dog_name }}</option>
             {% endfor %}
         </select>
 
+    </div>
+    <br>
     <br>
     <input type="text" name="pupdatenotes">
     <br>

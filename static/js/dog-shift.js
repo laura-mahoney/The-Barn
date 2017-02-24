@@ -59,7 +59,7 @@ var clicks = 0;
 function showDogForm(evt){
     var currentDogId = evt.target.attributes['data-dog'].value;
     $('.dogForm').hide();
-    
+    console.log()
     if(clicks%2 == 0){
         $('.dogForm').hide();
         $("#" + currentDogId).show();
@@ -68,6 +68,19 @@ function showDogForm(evt){
         $("#" + currentDogId).hide();
         clicks = clicks + 1;
     };
+    console.log(currentDogId);
+
+    // var allDogs = ();
+    // var thisDog = $(this);
+    // for(var i=; i<allDogs.length; i++){
+        // if(dog.dog_name != thisDog.dog_name){
+
+    //     // }
+    // }
+
+    // if($(".playmates").attr("value") == this.dog_name){
+
+    // }
 
 };
 
@@ -86,8 +99,6 @@ function addPupdates(evt){
 
     var dogInput = $(this).serializeArray();
     console.log(dogInput);
-
-    debugger;
 
     var dogData = {};
 

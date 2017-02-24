@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<br>Welcome to The Barn {{ crew.fname }}
+<br>Welcome to The Barn {{ crew.fname }}<br>
+
+Recent Notes: {{ recent_notes }}<br>
 
 <form action="/addnotes" method="POST">
     <br>
@@ -47,6 +49,7 @@ Altered: {{ dog.altered }}<br>
 Age: {{ dog.age }}<br>
 Intake Date: {{ dog.intake_date }}<br>
 Playmates: <br>
+Graphs: <br>
     </div>
 </form>
 
