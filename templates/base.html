@@ -5,13 +5,14 @@
 
 </head>
 <body>
-     
-{% if "crew_id" in session %}
-    <a href="/logout">Logout</a><br>
-{% else %}
-    <a href="/sign_in">Sign In</a>
-{% endif %}
-
+     <span>    
+    {% if "crew_id" in session %}
+        <a href="/logout">Logout</a><br>
+        <a href="/calendar">Shift Calendar</a>
+    {% else %}
+        <a href="/sign_in">Sign In</a>
+    {% endif %}
+    </span>
 {% for flash in get_flashed_messages() %}
   {{ flash }}
 {% endfor %}

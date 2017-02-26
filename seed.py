@@ -86,6 +86,7 @@ def load_kennel():
         db.session.add(kennel)
 
     db.session.commit()
+    
 
 
 if __name__ == "__main__":

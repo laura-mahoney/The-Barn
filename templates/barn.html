@@ -3,17 +3,13 @@
 
 <br>Welcome to The Barn {{ crew.fname }}<br>
 
-Recent Notes: {{ recent_notes }}<br>
+Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
 
 <form action="/addnotes" method="POST">
     <br>
     <div id="shiftTime">
-        <select name="time_day">
-            <option value="Time" name="time">Time</option>
-            <option value="Morning" name="time">Morning</option>
-            <option value="Noon" name="time">Noon</option>
-            <option value="Evening" name="time">Evening</option>
-        </select>
+        <input type="date" name="date">
+        <input type="time" name="time">
     </div>
     <div id="shiftDuration">
         <select name="duration_shift">
@@ -24,13 +20,15 @@ Recent Notes: {{ recent_notes }}<br>
             <option value="4 hours" name="duration">4 hours</option>
         </select>
     </div>
-    <input type="submit" name="createshift" value="Create Shift"><br>
-</form>
-
-<form action="/calendar" method="GET">
-    <br>
-    <input type="submit" value="Shift Calendar"><br>
-    <br>
+    <div id="otherCrew">
+        <select name="crew_name">
+                <option value="support">Support</option>
+            {% for crew in all_crew %}
+                <option value="{{ crew.fname }}">{{ crew.fname }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <input type="submit" name="createshift" value="Add Shift Notes"><br>
 </form>
 
 {% for dog in dogs %}
@@ -42,14 +40,29 @@ Recent Notes: {{ recent_notes }}<br>
    <div class="dogIntakeProfile" id="{{ dog.dog_id }}" style="display: none;"><br>
 
 Name: {{ dog.dog_name }}<br>
+
+Latest Pupdate: <br>
+{% for dogshift in recent_dogshifts %}
+    {% if dog.dog_id == dogshift.dog_id %}
+        {{ dogshift.notes }}
+    {% else %}
+        {% for prevdogshift in previous_dogshifts %}
+            {%if dog.dog_id == prevdogshift.dog_id%}
+                {{ prevdogshift.notes }}
+            {% endif %} 
+        {% endfor %}       
+    {% endif %}
+{% endfor %}<br>
+
+Playmates: <br>
+Graphs: <br>
 Kennel ID: {{ dog.kennel_id }}<br>
 Breed: {{ dog.breed }}<br>
 Gender: {{ dog.gender }}<br>
 Altered: {{ dog.altered }}<br> 
 Age: {{ dog.age }}<br>
 Intake Date: {{ dog.intake_date }}<br>
-Playmates: <br>
-Graphs: <br>
+
     </div>
 </form>
 

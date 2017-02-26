@@ -80,9 +80,10 @@ class Shift(db.Model):
         return "<Shift ID: shift_id=%s Date: date_time=%s>" % (self.shift_id, self.date_time)
 
     shift_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    date_time = db.Column(db.String(20), nullable=True)
+    date_time = db.Column(db.DateTime, nullable=False)
     duration = db.Column(db.String(20), nullable=True)
     notes = db.Column(db.String(3000), nullable=True)
+
 """ General notes will remain null because they don't get added until the submit button gets hit"""
 
 ################### Barn and Dog Shift Relationships ###################
@@ -98,7 +99,7 @@ class Barncrewshift(db.Model):
     bc_id = db.Column(db.Integer, autoincrement=True, primary_key=True, nullable=False)
     shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), nullable=False)
     crew_id = db.Column(db.Integer, db.ForeignKey("barncrew.crew_id"), nullable=False)
-    mentor_id = db.Column(db.Integer, db.ForeignKey("barncrew.crew_id"), nullable=True)
+    support_id = db.Column(db.Integer, db.ForeignKey("barncrew.crew_id"), nullable=True)
 
 
     bcshift = db.relationship('Shift', backref='crew')
@@ -198,12 +199,12 @@ class Dogplaymates(db.Model):
     __tablename__ = "dogplaymates"
 
     def __repr__(self):
-        return "<Dog ID: dog_id=%s Playmate: play_mate=%s>" % (self.dog_id, self.play_mate)
+        return "<Dog ID: dog_id=%s Playmate1: play_mate1=%s Playmate2: play_mate2=%s>" % (self.dog_id, self.play_mate1, self.play_mate2)
 
     shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
     dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
-    play_mate = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
-
+    play_mate1 = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
+    play_mate2 = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
 
 
 def init_app():

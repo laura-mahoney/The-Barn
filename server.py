@@ -5,10 +5,11 @@ from flask_assets import Environment
 from requests_oauthlib import OAuth2Session
 from requests_oauthlib.compliance_fixes import facebook_compliance_fix
 from jinja2 import StrictUndefined 
-from model import connect_to_db, db, Barncrew, Kennel, Dog, Shift, Activities, Commands, Dogshiftcommands, Dogshiftactivities, Dogplaymates, Dogshift
+from model import connect_to_db, db, Barncrew, Kennel, Dog, Shift, Activities, Commands, Dogshiftcommands, Dogshiftactivities, Dogplaymates, Dogshift, Barncrewshift
 import jinja2
 import json 
-from datetime import datetime
+from datetime import datetime, time, date
+from sqlalchemy import desc
 
 """ facebook authentication """
 
@@ -46,6 +47,8 @@ app.jinja_env.undefined = StrictUndefined
 
 #routes
 #####################################################################
+
+
 @app.route('/')
 def index_page():
     """The Barn Homepage"""
@@ -59,6 +62,7 @@ def index_page():
 #     print 'Please authorize', authorization_url
 
 #     return redirect(authorization_url, code=302)
+
 
 @app.route('/register', methods=["GET"])
 def register_form():
@@ -124,6 +128,7 @@ def sign_in_process():
     password = request.form["password"]
     
     crew = Barncrew.query.filter_by(email=email).first()
+    dogs = db.session.query(Dog).all()
 
     if not crew:
         flash("Barncrew member does not exist.")
@@ -136,23 +141,39 @@ def sign_in_process():
     session["crew_id"] = crew.crew_id
     # Barncrew.query.get(session["crew_id"])
 
-    dogs = db.session.query(Dog).all()
+    
+    shift_id = Shift.query.all()
+    all_crew = Barncrew.query.all()
+
+    recent_shift = Shift.query.order_by(Shift.date_time.desc()).first().shift_id#query for most recent notes by date and time
+    recent_notes = Shift.query.get(recent_shift)
+
+    recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
+
+    previous_dogshift = Dogshift.query.get(recent_shift-1).all()
+
 
     flash("Logged in")
-    return render_template("barn.html", crew=crew, dogs=dogs)
+    return render_template("barn.html", crew=crew, dogs=dogs, shift_id=shift_id, all_crew=all_crew, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts, previous_dogshifts=previous_dogshifts)
+
+
 
 @app.route('/thebarn')
 def logged_in():
     """returns the barn homepage when a user is already logged in"""
     crew = Barncrew.query.get(session['crew_id'])
-    # dogs = db.session.query(Dog.dog_name).all()
     dogs = db.session.query(Dog).all()
+    
+    #shift_id = Shift.query.all()
+    all_crew = Barncrew.query.all()
+    recent_shift = Shift.query.order_by(Shift.date_time.desc()).first().shift_id#query for most recent notes by date and time
+    recent_notes = Shift.query.get(recent_shift)
+    
+    recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
 
-    shift_id = Shift.query.all()
+    previous_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift-1).all()
 
-    recent_notes = shift_id[-1].notes
-
-    return render_template("barn.html", crew=crew, dogs=dogs, recent_notes=recent_notes)
+    return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts, previous_dogshifts=previous_dogshifts)
 
 
 @app.route('/logout')
@@ -172,19 +193,23 @@ def create_shift():
     crew = Barncrew.query.get(session['crew_id'])
     dogs = db.session.query(Dog).all()
     
-    date_time = request.form.get("time_day")
+    date_time = request.form.get("date") + " " + request.form.get("time")
+    date_time = datetime.strptime(date_time, "%Y-%m-%d %H:%M")
+
     duration = request.form.get("duration_shift")
-    print date_time
-    print duration
+    support_name = request.form.get("crew_name")
+    support = Barncrew.query.filter(Barncrew.fname==support_name).first()
 
-
-    new_shift = Shift(date_time=date_time, duration=duration)
+    new_shift = Shift(date_time=date_time, duration=duration)    
     db.session.add(new_shift)
     db.session.commit()
 
-    session["shift_id"] = new_shift.shift_id #adding shift_id to session for later use
+    new_bcshift = Barncrewshift(shift_id=new_shift.shift_id, crew_id=crew.crew_id, support_id=support.crew_id)
+    db.session.add(new_bcshift)
+    db.session.commit()   
 
-    return render_template("addnotes.html", dogs=dogs, crew=crew, shift_id=new_shift.shift_id)
+
+    return render_template("addnotes.html", dogs=dogs, crew=crew, shift_id=new_shift.shift_id, new_shift=new_shift)
 
 
 
@@ -195,7 +220,6 @@ def dog_form():
     
     crew = Barncrew.query.get(session['crew_id'])
     # shift_id = Shift.query.get(session['shift_id']) #querying databse for shift_id stored in session
-
 
     dog_id = request.form.get("dog-id")
     dog = Dog.query.get(dog_id)
@@ -217,6 +241,9 @@ def dog_form():
     shake = request.form.get("shake")
     stay = request.form.get("stay")
 
+    dogs = db.session.query(Dog).all()
+    play_mate1 = request.form.get("dog1")
+    play_mate2 = request.form.get("dog2")
 
     new_notes = Dogshift(shift_id=shift_id, dog_id=dog_id, notes=notes)
 
@@ -227,18 +254,23 @@ def dog_form():
     new_command = Commands(wait=wait, sit=sit, down=down, drop=drop, leaveit=leaveit,
                             shake=shake, stay=stay)
 
+    new_playmate = Dogplaymates(shift_id=shift_id, dog_id=dog_id, play_mate1=play_mate1, play_mate2=play_mate2)
+
 
     db.session.add(new_notes)
     db.session.add(new_activity)
     db.session.add(new_command)
+    db.session.add(new_playmate)
     db.session.commit()
 
-    # new_dogshiftact = Dogshiftactivities(activity_id=)
+    new_dogshiftact = Dogshiftactivities(activity_id=new_activity.activity_id, dogshift_id=new_notes.dogshift_id)
 
-    # new_dogshiftcom = Dogshiftcommands()
+    new_dogshiftcom = Dogshiftcommands(commands_id=new_command.commands_id, dogshift_id=new_notes.dogshift_id)
 
-    # db.session.add(new_dogshiftact)
-    # db.session.add(new_dogshiftcom)
+    db.session.add(new_dogshiftact)
+    db.session.add(new_dogshiftcom)
+    db.session.commit()
+
     my_dictionary = {"message": "notes succesfully added"}
 
     return jsonify(my_dictionary)
