@@ -91,6 +91,7 @@ $(".dogNames").on("click", showDogForm);
 // ///////////this function adds form data/pupdates to the database
 function pupdateSuccess(){
     $('.dogForm').hide();
+    // $(this).prop("disabled", true); test this 
     console.log('Successfully Pupdated!');
 }
 
@@ -137,6 +138,41 @@ $(".pupdateForm").submit(addPupdates);
 // };
     
 // $("#generalNotes").submit(submitShiftNotes);
+
+
+
+function playmatesReceived(){
+    console.log("Report received from server");
+};
+//an AJAX get request that searches the database for all the dog's playmates to display
+function checkPlaymates(evt){
+    evt.preventDefault();
+
+    var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
+    $.post("/playmates", currentDogId);
+    
+    var getFriends = $.get("/playmates", playmatesReceived); 
+
+    };
+
+$(".dogPicture").mouseover(checkPlaymates);
+
+
+
+// //an AJAX get request that calculates all scores of dogs and displays number
+// function displayCommandsScore(){
+    
+//     $.get()
+// };
+
+
+
+
+// //an AJAX get request that reports all actvities over a week for a specific dog
+// function reportCommandsScore(){
+//     return true
+// };
+
 
 
 });

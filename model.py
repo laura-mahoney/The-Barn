@@ -2,6 +2,7 @@
 
 import datetime
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
@@ -119,7 +120,7 @@ class Dogshift(db.Model):
     notes = db.Column(db.String(3000), nullable=False)
 
 
-    dshift = db.relationship('Shift', backref='dog')
+    shift = db.relationship('Shift', backref='dog')
 
 
 ################### Activities and Commands ###################
@@ -140,6 +141,7 @@ class Activities(db.Model):
     pushups = db.Column(db.String(20), default=False, nullable=True)
     fetch = db.Column(db.String(20), default=False, nullable=True)
 
+    dsactivities = db.relationship('Dogshiftactivities')
 
 
 class Commands(db.Model):
@@ -159,6 +161,8 @@ class Commands(db.Model):
     shake = db.Column(db.Integer, nullable=True)
     stay = db.Column(db.Integer, nullable=True)
 
+    dscommands = db.relationship('Dogshiftcommands')
+
 
 ################### DogShift Activities and Commands ###################
 
@@ -175,6 +179,7 @@ class Dogshiftcommands(db.Model):
     dogshift_id = db.Column(db.Integer, db.ForeignKey("dogshift.dogshift_id"), nullable=False)
     score = db.Column(db.Integer, nullable=True)
 
+    dog = db.relationship('Dogshift')
 
 
 class Dogshiftactivities(db.Model):
@@ -189,6 +194,7 @@ class Dogshiftactivities(db.Model):
     activity_id = db.Column(db.Integer, db.ForeignKey("activities.activity_id"), nullable=True)
     dogshift_id = db.Column(db.Integer, db.ForeignKey("dogshift.dogshift_id"), nullable=False)
 
+    dog = db.relationship('Dogshift')
 
 
 ################### Dogplaymates ###################
@@ -201,6 +207,7 @@ class Dogplaymates(db.Model):
     def __repr__(self):
         return "<Dog ID: dog_id=%s Playmate1: play_mate1=%s Playmate2: play_mate2=%s>" % (self.dog_id, self.play_mate1, self.play_mate2)
 
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
     shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
     dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
     play_mate1 = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)

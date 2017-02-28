@@ -36,7 +36,7 @@ Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
    <div>
         <p class="dogProfile" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
    </div>
-   <img src= "static/images/{{ dog.dog_name }}.jpg" class="dogPicture">
+   <img src= "static/images/{{ dog.dog_name }}.jpg" class="dogPicture" data-dog="{{ dog.dog_id }}">
    <div class="dogIntakeProfile" id="{{ dog.dog_id }}" style="display: none;"><br>
 
 Name: {{ dog.dog_name }}<br>
@@ -44,13 +44,7 @@ Name: {{ dog.dog_name }}<br>
 Latest Pupdate: <br>
 {% for dogshift in recent_dogshifts %}
     {% if dog.dog_id == dogshift.dog_id %}
-        {{ dogshift.notes }}
-    {% else %}
-        {% for prevdogshift in previous_dogshifts %}
-            {%if dog.dog_id == prevdogshift.dog_id%}
-                {{ prevdogshift.notes }}
-            {% endif %} 
-        {% endfor %}       
+        {{ dogshift.notes }}      
     {% endif %}
 {% endfor %}<br>
 

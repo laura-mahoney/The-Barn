@@ -10,6 +10,7 @@ import jinja2
 import json 
 from datetime import datetime, time, date
 from sqlalchemy import desc
+from json import loads 
 
 """ facebook authentication """
 
@@ -152,10 +153,8 @@ def sign_in_process():
 
     previous_dogshift = Dogshift.query.get(recent_shift-1).all()
 
-
     flash("Logged in")
-    return render_template("barn.html", crew=crew, dogs=dogs, shift_id=shift_id, all_crew=all_crew, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts, previous_dogshifts=previous_dogshifts)
-
+    return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, shift_id=shift_id, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts, previous_dogshift=previous_dogshift)
 
 
 @app.route('/thebarn')
@@ -171,9 +170,9 @@ def logged_in():
     
     recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
 
-    previous_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift-1).all()
+    previous_dogshift = Dogshift.query.filter(Dogshift.shift_id==(recent_shift-1)).all()
 
-    return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts, previous_dogshifts=previous_dogshifts)
+    return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts, previous_dogshift=previous_dogshift)
 
 
 @app.route('/logout')
@@ -293,6 +292,39 @@ def post_notes():
 
     flash("You've added general barn notes!")
     return redirect("/thebarn")
+
+
+@app.route('/playmates', methods=['GET', 'POST'])
+def get_reports():
+    """Query the database to get dog friends and dog reports """
+
+    current_id = request.form.get('currentDogId')
+    dog_playmates = Dogplaymates.query.filter_by(dog_id=current_id).all()
+
+    dog_friends_list = []
+
+    for friends in dog_playmates:
+        dog_friends_list.append(friends.play_mate1)
+        dog_friends_list.append(friends.play_mate2)
+    
+    dog_friends = {}
+
+    dog_friends['dog_id']=current_id
+    dog_friends['friends']=dog_friends_list
+    print dog_friends 
+
+    return json.dumps(dog_friends)
+
+
+@app.route('/getscores', methods=['GET', 'POST'])
+def get_reports():
+    """ Query the database for command scores for each dog for graphing"""
+    pass
+
+
+
+
+
 
 
 
