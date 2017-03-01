@@ -31,14 +31,58 @@ Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
     <input type="submit" name="createshift" value="Add Shift Notes"><br>
 </form>
 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<div class="dogFriendGraph" style='display:none'>
+    <script> 
+    // load data
+        d3.json("/playmates.json", makeTreeGraph);
+
+        function makeTreeGraph(error, data){
+            var dogNodes = data.dog_nodes;
+            var dogLinks = data.dog_links;
+
+            // debugger;
+
+        // visualization dimensions 
+
+        // svg container 
+
+        //     var margin = {top: 20, right: 120, bottom: 20, left: 120};
+        //     var width = 960 - margin.right - margin.left;
+        //     var height = 500 - margin.top - margin.bottom;
+        
+        //     var i = 0;
+
+        //     var tree = d3.layout.tree().size([height, width]);
+
+        //     var diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
+
+        //     var svg = d3.select("body").append("svg").attr("width", width + margin.right + margin.left).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        //     root = dogNodes[0][1];
+          
+        //     update(root);
+
+
+
+        };
+
+
+    </script>
+</div>
+
+
+<br>
 {% for dog in dogs %}
 
    <div>
-        <p class="dogProfile" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
+        <p class="dogProfile" data-dog="{{ dog.dog_id }}" style="display: none">{{ dog.dog_name }}</p>
    </div>
-   <img src= "static/images/{{ dog.dog_name }}.jpg" class="dogPicture" data-dog="{{ dog.dog_id }}">
+   
+   <img src= "static/images/{{ dog.dog_name }}.jpg" id="dogp{{ dog.dog_id }}" class="dogPicture" data-dog="{{ dog.dog_id }}">
    <div class="dogIntakeProfile" id="{{ dog.dog_id }}" style="display: none;"><br>
-
+<br>
 Name: {{ dog.dog_name }}<br>
 
 Latest Pupdate: <br>
@@ -56,7 +100,7 @@ Gender: {{ dog.gender }}<br>
 Altered: {{ dog.altered }}<br> 
 Age: {{ dog.age }}<br>
 Intake Date: {{ dog.intake_date }}<br>
-
+<br>
     </div>
 </form>
 

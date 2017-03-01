@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Our three little circles</h1>
+
+    <svg width="800" height="1000">
+      <circle cx="100" cy="200" r="10"></circle>
+      <circle cx="400" cy="200" r="10"></circle>
+      <circle cx="600" cy="200" r="10"></circle>
+    </svg>
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+        var circles = d3.selectAll("circle");
+        
+        // STEP 1        
+        // circles.attr("r", 30);
+        
+        // STEP 2
+        // circles.data([100, 250, 500]);
+        
+        
+        // circles.attr("r", function(d) {
+        //     return d/10;
+        // });
+
+       // STEP 3
+       // circles.data([
+       //         {size: 100, color:'#e6550d'},
+       //         {size: 250, color:'pink'},
+       //         {size: 500, color:'#aaa000'}
+       // ]);
+
+       // circles.style("fill", function(d){
+       //     console.log(d.color);
+       //     return d.color;
+       // });
+
+       //  circles.attr("r", function(d) {
+       //      return d.size/10;
+       //  });
+
+    </script>
+
+</body>
+
+
+</html>

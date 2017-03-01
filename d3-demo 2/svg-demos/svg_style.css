@@ -1,0 +1,31 @@
+/* CSS that will stylize the SVG in svg_example.html */
+
+rect,
+circle {
+    stroke: black;
+    stroke-width: 2px;
+    fill-opacity: 0.7;
+}
+
+
+
+#r2 {
+    fill: #ead8ed;
+}
+
+#r3 {
+    fill: #6B6240;
+}
+
+#r4 {
+    fill: #9E915F;
+}
+
+#r5 {
+    fill: #AE9635;
+}
+
+#r1 {
+    fill: #eac947;
+    fill-opacity: 1;
+}

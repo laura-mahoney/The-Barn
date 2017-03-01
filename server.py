@@ -151,10 +151,10 @@ def sign_in_process():
 
     recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
 
-    previous_dogshift = Dogshift.query.get(recent_shift-1).all()
+    # previous_dogshift = Dogshift.query.get(recent_shift-1).all()
 
     flash("Logged in")
-    return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, shift_id=shift_id, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts, previous_dogshift=previous_dogshift)
+    return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, shift_id=shift_id, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts)
 
 
 @app.route('/thebarn')
@@ -170,9 +170,9 @@ def logged_in():
     
     recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
 
-    previous_dogshift = Dogshift.query.filter(Dogshift.shift_id==(recent_shift-1)).all()
+    # previous_dogshift = Dogshift.query.filter(Dogshift.shift_id==(recent_shift-1)).all()
 
-    return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts, previous_dogshift=previous_dogshift)
+    return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts)
 
 
 @app.route('/logout')
@@ -294,32 +294,83 @@ def post_notes():
     return redirect("/thebarn")
 
 
-@app.route('/playmates', methods=['GET', 'POST'])
+@app.route('/playmates.json', methods=['GET', 'POST'])
 def get_reports():
     """Query the database to get dog friends and dog reports """
-
+    #current dog's id
     current_id = request.form.get('currentDogId')
+    print current_id
+    #querying for the current dog's playmates 
     dog_playmates = Dogplaymates.query.filter_by(dog_id=current_id).all()
 
-    dog_friends_list = []
+    #alll of the dog objects
+    dogs = db.session.query(Dog).all()
+
+    #a list of all the current dog's dog friend ids, not unique  
+    dog_friends_ids = []
 
     for friends in dog_playmates:
-        dog_friends_list.append(friends.play_mate1)
-        dog_friends_list.append(friends.play_mate2)
+        dog_friends_ids.append(friends.play_mate1)
+        dog_friends_ids.append(friends.play_mate2)
     
-    dog_friends = {}
+    print dog_friends_ids
+    # I was using thiss query to get the dog's names, but decided to just use ids
+    # dog_names = []
+    
+    # for friends in dog_friends_ids:
+    #         dog_name=Dog.query.get(friends).dog_name 
+    #         dog_names.append(dog_name)
 
-    dog_friends['dog_id']=current_id
-    dog_friends['friends']=dog_friends_list
-    print dog_friends 
 
-    return json.dumps(dog_friends)
+    #looping over the dog list to gather frequency of dog friendships 
+    dog_frequency={}
 
+    for friends in dog_friends_ids:
+        if friends in dog_frequency:
+            dog_frequency[friends] += 1
+        else: 
+            dog_frequency[friends] = 1
 
-@app.route('/getscores', methods=['GET', 'POST'])
-def get_reports():
-    """ Query the database for command scores for each dog for graphing"""
-    pass
+    #make nodes and links for graph out of the unique dog ids 
+    #nodes
+
+    dog_nodes = []
+    unique_ids=dog_frequency.keys()
+
+    for dog_id in unique_ids: 
+        
+        dog_dict = {}
+
+        dog_dict['node']=dog_id
+        dog_dict['source']=int(current_id)
+        
+        dog_nodes.append(dog_dict)
+
+    #links 
+    dog_links = []
+
+    for dog_id in unique_ids:
+        link_dict = {}
+
+        link_dict['source']=int(current_id)
+        link_dict['target']=dog_id
+        link_dict['value']=dog_frequency[dog_id] #this is the value of frequency 
+
+        dog_links.append(link_dict)
+
+    for i in dog_links:
+        print i
+
+    for i in dog_nodes:
+        print i
+
+    
+    return jsonify({'dog_nodes': dog_nodes, 'dog_links': dog_links})
+
+# @app.route('/getscores', methods=['GET', 'POST'])
+# def get_reports():
+#     """ Query the database for command scores for each dog for graphing"""
+#     pass
 
 
 

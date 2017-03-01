@@ -25,7 +25,7 @@ function showIntakeData(evt){
     };
 }
 
-$(".dogProfile").on("click", showIntakeData);
+$(".dogPicture").on("click", showIntakeData);
 
 
 
@@ -141,17 +141,18 @@ $(".pupdateForm").submit(addPupdates);
 
 
 
+
+// success function shows dog report
 function playmatesReceived(){
     console.log("Report received from server");
+    $('.dogFriendGraph').show();
 };
 //an AJAX get request that searches the database for all the dog's playmates to display
 function checkPlaymates(evt){
     evt.preventDefault();
 
     var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
-    $.post("/playmates", currentDogId);
-    
-    var getFriends = $.get("/playmates", playmatesReceived); 
+    $.post("/playmates.json", currentDogId, playmatesReceived);
 
     };
 
