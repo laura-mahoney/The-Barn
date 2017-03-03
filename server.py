@@ -264,9 +264,9 @@ def dog_form():
 
     new_dogshiftact = Dogshiftactivities(activity_id=new_activity.activity_id, dogshift_id=new_notes.dogshift_id)
 
-    # score = [wait, sit, down, drop, leaveit, shake, stay]
+    score = wait + sit + down + drop + leaveit + shake + stay
     
-    new_dogshiftcom = Dogshiftcommands(commands_id=new_command.commands_id, dogshift_id=new_notes.dogshift_id)
+    new_dogshiftcom = Dogshiftcommands(commands_id=new_command.commands_id, dogshift_id=new_notes.dogshift_id, score=score)
 
     db.session.add(new_dogshiftact)
     db.session.add(new_dogshiftcom)

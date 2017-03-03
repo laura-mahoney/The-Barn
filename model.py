@@ -121,6 +121,8 @@ class Dogshift(db.Model):
 
 
     shift = db.relationship('Shift', backref='dog')
+    # just added 
+    dog = db.relationship('Dog')
 
 
 ################### Activities and Commands ###################
@@ -177,10 +179,12 @@ class Dogshiftcommands(db.Model):
     dscommands_id = db.Column(db.Integer, primary_key=True)
     commands_id = db.Column(db.Integer, db.ForeignKey('commands.commands_id'), nullable=False)
     dogshift_id = db.Column(db.Integer, db.ForeignKey("dogshift.dogshift_id"), nullable=False)
-    score = db.Column(db.Integer, nullable=True)
+    score = db.Column(db.String(10), nullable=True)
 
-    dog = db.relationship('Dogshift')
+    dogshift = db.relationship('Dogshift', backref='dogshiftcommand')
 
+    # just added 
+    command = db.relationship('Commands')
 
 class Dogshiftactivities(db.Model):
     """ """

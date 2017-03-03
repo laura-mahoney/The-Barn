@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h3>Add Pupdate</h3>
+<h4>Add Pupdate</h4>
 <script src="https://code.jquery.com/jquery.js" type="text/javascript"></script>
 Shift ID: {{ shift_id }}
 Shift Date: {{ new_shift.date_time }}
 
 {% for dog in dogs %}
   <div>
-  <p class="dogNames" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
+  <p class="dogNames" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}
+  <img src= "static/images/{{ dog.dog_name }}.jpg" id="miniDogp{{ dog.dog_id }}" class="miniDogPicture"></p>
   </div>
+
   <div class="dogForm" id="{{ dog.dog_id }}" style="display: none;">
 <!-- this page will provide a form for daily shift entries, the intake information will eventually include playmates -->
 {{ crew.fname }}, provide a pupdate for {{ dog.dog_name }}<br>
@@ -146,7 +148,7 @@ Shift Date: {{ new_shift.date_time }}
 </div>
 {% endfor %}
 
-<h3>Add General Notes</h3><br>
+<h4>Add General Notes</h4><br>
 
 <form action="/submitnotes" id="generalNotes" method="POST">
     <input type="text" name="notes"><br>

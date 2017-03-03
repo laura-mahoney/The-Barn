@@ -77,6 +77,17 @@ text {
 
 
 
+.miniDogPicture   {
+    display: block;
+    border-radius: 80px;
+    height: 70px;
+    width: 70px;
+    padding: 10px;
+    vertical-align: top;
+}
+
+
+
 /*.dogIntakeProfile {
 
 }
