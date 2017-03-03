@@ -1,9 +1,5 @@
 
 "use strict";
-// this needs to happen for every dog
-// on click each dog form needs to pop up 
-
-// var $ = require('jquery');
 
 
 
@@ -12,44 +8,60 @@ $(document).ready(function(){
 var proclicks = 0;
 //this function shows and hides the intake information for a given dog on the barn page
 function showIntakeData(evt){
-    var currentDogProfile = evt.target.attributes['data-dog'].value;
     $('.dogIntakeProfile').hide();
+   
+    var allDogs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+    var thisDog = evt.target.attributes['data-dog'].value;
+
+    for(var i = 0; i<=allDogs.length; i++){
+        if(i != thisDog){
+            $("#dogp" + i).fadeTo("slow", 0.33)
+        };
+    };
+
+    var currentDogProfile = evt.target.attributes['data-dog'].value;
     
     if(proclicks%2 == 0){
         $('.dogIntakeProfile').hide();
         $("#" + currentDogProfile).show();
         proclicks = proclicks + 1;
+
     } else {
         $("#" + currentDogProfile).hide();
         proclicks = proclicks + 1;
+        $('.dogPicture').fadeTo("fast", 1);
     };
+
+
 }
 
 $(".dogPicture").on("click", showIntakeData);
 
 
 
-// this function creates a shift when button is hit, now it needs to send time
-// and duration to the server
-// function successShift(){
-//     console.log('Shift successfully created');
-// }
 
-// function createShift(evt){
-//     evt.preventDefault();
 
-//     var shiftData = {
-//         "time": $("#shiftTime").attr('value'),
-//         "duration": $("#shiftDuration").attr('value')
-//     };
-//     console.log(shiftData);
-//     debugger;
+// success function shows dog report
+function playmatesReceived(data){
+    console.log("Id received from server");
+    makeTreeGraph(data);
+};
+//an AJAX get request that searches the database for all the dog's playmates to display
+function checkPlaymates(evt){
+    evt.preventDefault();
 
-//     $.post("/addnotes", shiftData, successShift);
+    var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
+    
+    $.post("/playmates.json", currentDogId, playmatesReceived);
 
-// }
+};
 
-// $("#createshift").on("click", createShift);
+
+$(".dogPicture").on('click', checkPlaymates);
+
+
+
+
 
 
 
@@ -70,21 +82,11 @@ function showDogForm(evt){
     };
     console.log(currentDogId);
 
-    // var allDogs = ();
-    // var thisDog = $(this);
-    // for(var i=; i<allDogs.length; i++){
-        // if(dog.dog_name != thisDog.dog_name){
-
-    //     // }
-    // }
-
-    // if($(".playmates").attr("value") == this.dog_name){
-
-    // }
-
 };
 
 $(".dogNames").on("click", showDogForm);
+
+
 
 
 
@@ -119,44 +121,6 @@ function addPupdates(evt){
 $(".pupdateForm").submit(addPupdates);
 
 
-
-
-// /////////////////this function will submit general notes for the shift to the database
-// function noteSuccess(){
-//     console.log('General notes added for this shift.');
-
-// };
-
-// function submitShiftNotes(evt){
-//     evt.preventDefault();
-    
-//     var generalNotes = $(this).serializeArray();
-//     var data = {'generalNotes': generalNotes[0].value, 'shift_id': shift_id};
-
-
-//     $.post("/submitnotes", data, noteSuccess);
-// };
-    
-// $("#generalNotes").submit(submitShiftNotes);
-
-
-
-
-// success function shows dog report
-function playmatesReceived(){
-    console.log("Report received from server");
-    $('.dogFriendGraph').show();
-};
-//an AJAX get request that searches the database for all the dog's playmates to display
-function checkPlaymates(evt){
-    evt.preventDefault();
-
-    var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
-    $.post("/playmates.json", currentDogId, playmatesReceived);
-
-    };
-
-$(".dogPicture").mouseover(checkPlaymates);
 
 
 

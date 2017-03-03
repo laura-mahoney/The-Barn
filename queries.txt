@@ -1,0 +1,5 @@
+SELECT dogshift.dog_id, dogshiftcommands.score, commands.commands_id FROM dogshift INNER JOIN dogshiftcommands ON dogshift.dogshift_id=dogshiftcommands.dogshift_id INNER JOIN commands ON dogshiftcommands.commands_id=commands.commands_id WHERE dog_id=1;
+
+
+
+score

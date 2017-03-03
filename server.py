@@ -264,6 +264,8 @@ def dog_form():
 
     new_dogshiftact = Dogshiftactivities(activity_id=new_activity.activity_id, dogshift_id=new_notes.dogshift_id)
 
+    # score = [wait, sit, down, drop, leaveit, shake, stay]
+    
     new_dogshiftcom = Dogshiftcommands(commands_id=new_command.commands_id, dogshift_id=new_notes.dogshift_id)
 
     db.session.add(new_dogshiftact)
@@ -299,12 +301,14 @@ def get_reports():
     """Query the database to get dog friends and dog reports """
     #current dog's id
     current_id = request.form.get('currentDogId')
-    print current_id
+    current_name = Dog.query.get(current_id).dog_name
+    print current_name 
     #querying for the current dog's playmates 
     dog_playmates = Dogplaymates.query.filter_by(dog_id=current_id).all()
 
     #alll of the dog objects
-    dogs = db.session.query(Dog).all()
+    # dogs = db.session.query(Dog).all()
+
 
     #a list of all the current dog's dog friend ids, not unique  
     dog_friends_ids = []
@@ -313,56 +317,78 @@ def get_reports():
         dog_friends_ids.append(friends.play_mate1)
         dog_friends_ids.append(friends.play_mate2)
     
-    print dog_friends_ids
-    # I was using thiss query to get the dog's names, but decided to just use ids
-    # dog_names = []
-    
+    #counts the frequency of a dog friendship 
+    # dog_frequency={}
+
     # for friends in dog_friends_ids:
-    #         dog_name=Dog.query.get(friends).dog_name 
-    #         dog_names.append(dog_name)
+    #     if friends in dog_frequency:
+    #         dog_frequency[friends] += 1
+    #     else: 
+    #         dog_frequency[friends] = 1
 
 
-    #looping over the dog list to gather frequency of dog friendships 
-    dog_frequency={}
+    #this initializes the first index of the node list as a dictionary with nodes and sources defined as the current dog's dog name
+    dog_nodes = []
+    current_dog = {}
+    current_dog['node'] = current_name 
+    current_dog['source'] = current_name
 
+    dog_nodes.append(current_dog)
+
+
+    #now dog friend ids are unique as nodes , no more repeat names 
+    dog_friends_ids = set(dog_friends_ids)
+
+    #dog nodes are now based on dog friend names instead of ids 
     for friends in dog_friends_ids:
-        if friends in dog_frequency:
-            dog_frequency[friends] += 1
-        else: 
-            dog_frequency[friends] = 1
+            dog_names={}
+            dog_name=Dog.query.get(friends).dog_name 
+            dog_names['node']=dog_name
+            dog_names['source']=current_name 
+
+            dog_nodes.append(dog_names)
+
+    print dog_nodes
+    
+    #looping over the dog list to gather frequency of dog friendships 
 
     #make nodes and links for graph out of the unique dog ids 
     #nodes
 
-    dog_nodes = []
-    unique_ids=dog_frequency.keys()
+    # dog_nodes = []
+    # unique_ids=dog_frequency.keys()
 
-    for dog_id in unique_ids: 
+    # for dog_id in unique_ids: 
         
-        dog_dict = {}
+    #     dog_dict = {}
 
-        dog_dict['node']=dog_id
-        dog_dict['source']=int(current_id)
+    #     dog_dict['node']=dog_id
+    #     dog_dict['source']=int(current_id)
         
-        dog_nodes.append(dog_dict)
+    #     dog_nodes.append(dog_dict)
 
-    #links 
+    #links are just indices based on the length of the dog nodes
     dog_links = []
+    for i in range(1, len(dog_nodes)):
+        link = {'source': 0, 'target': i}
+        dog_links.append(link)
 
-    for dog_id in unique_ids:
-        link_dict = {}
+    print dog_links  
 
-        link_dict['source']=int(current_id)
-        link_dict['target']=dog_id
-        link_dict['value']=dog_frequency[dog_id] #this is the value of frequency 
+    # for dog_id in unique_ids:
+    #     link_dict = {}
 
-        dog_links.append(link_dict)
+    #     link_dict['source']=0
+    #     link_dict['target']=dog_id
+    #     link_dict['value']=dog_frequency[dog_id] #this is the value of frequency 
 
-    for i in dog_links:
-        print i
+    #     dog_links.append(link_dict)
 
-    for i in dog_nodes:
-        print i
+    # for i in dog_links:
+    #     print i
+
+    # for i in dog_nodes:
+    #     print i
 
     
     return jsonify({'dog_nodes': dog_nodes, 'dog_links': dog_links})

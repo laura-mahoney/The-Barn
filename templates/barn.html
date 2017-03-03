@@ -31,42 +31,79 @@ Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
     <input type="submit" name="createshift" value="Add Shift Notes"><br>
 </form>
 
-<script src="https://d3js.org/d3.v4.min.js"></script>
 
-<div class="dogFriendGraph" style='display:none'>
-    <script> 
-    // load data
-        d3.json("/playmates.json", makeTreeGraph);
+<div class="dogFriendGraph">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+        <script> 
 
-        function makeTreeGraph(error, data){
+        function makeTreeGraph(data){
             var dogNodes = data.dog_nodes;
             var dogLinks = data.dog_links;
+            
 
-            // debugger;
+            console.log(dogNodes);
+            console.log(dogLinks);   
 
-        // visualization dimensions 
+            var width = 800;
+            var height = 600;
 
-        // svg container 
+            var svg = d3.select('body')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
 
-        //     var margin = {top: 20, right: 120, bottom: 20, left: 120};
-        //     var width = 960 - margin.right - margin.left;
-        //     var height = 500 - margin.top - margin.bottom;
-        
-        //     var i = 0;
+            var force = d3.forceSimulation(d3.values(dogNodes))
+                .force("link", d3.forceLink(dogLinks).distance(100))
+                .force("center", d3.forceCenter(width / 2, height/ 2))
+                .force("charge", d3.forceManyBody().strength(-2));
 
-        //     var tree = d3.layout.tree().size([height, width]);
+            var link = svg.selectAll('.link')
+                .data(dogLinks)
+                .enter() 
+                .append('line')
+                .attr('class', 'link');
 
-        //     var diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
+            var node = svg.selectAll('.node')
+                .data(force.nodes())
+                .enter()
+                .append('g')
+                .attr('class', 'node');
 
-        //     var svg = d3.select("body").append("svg").attr("width", width + margin.right + margin.left).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-        //     root = dogNodes[0][1];
-          
-        //     update(root);
+            node.append("circle")
+                .attr("r", 10)
+                .style("fill", function (d) {
+                    console.log(d.source);
+                    return color(d.source);
+                });
+
+            node.append("text").text(function (d) {
+                return d.node;
+            });
+
+            force.on('end', function () {
+
+                node.attr("transform", function (d) {
+                    return "translate(" + d.x + "," + d.y + ")";
+                });
 
 
+                link.attr('x1', function (d) {
+                        return d.source.x;
+                    })
+                    .attr('y1', function (d) {
+                        return d.source.y;
+                    })
+                    .attr('x2', function (d) {
+                        return d.target.x;
+                    })
+                    .attr('y2', function (d) {
+                        return d.target.y;
+                    });
 
-        };
+                });
+            };
 
 
     </script>
@@ -77,7 +114,9 @@ Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
 {% for dog in dogs %}
 
    <div>
+    <h3>
         <p class="dogProfile" data-dog="{{ dog.dog_id }}" style="display: none">{{ dog.dog_name }}</p>
+        </h3>
    </div>
    
    <img src= "static/images/{{ dog.dog_name }}.jpg" id="dogp{{ dog.dog_id }}" class="dogPicture" data-dog="{{ dog.dog_id }}">
@@ -92,8 +131,6 @@ Latest Pupdate: <br>
     {% endif %}
 {% endfor %}<br>
 
-Playmates: <br>
-Graphs: <br>
 Kennel ID: {{ dog.kennel_id }}<br>
 Breed: {{ dog.breed }}<br>
 Gender: {{ dog.gender }}<br>
@@ -103,6 +140,7 @@ Intake Date: {{ dog.intake_date }}<br>
 <br>
     </div>
 </form>
+
 
 {% endfor %}
 {% endblock %}

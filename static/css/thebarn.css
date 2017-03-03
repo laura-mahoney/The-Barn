@@ -1,8 +1,7 @@
 
 
-
 .dogPicture   {
-    border-radius: 65px;
+    border-radius: 80px;
     height: 200px;
     width: 200px;
     padding: 10px;
@@ -61,13 +60,6 @@
 }
 
 
-
-
-
-
-
-/*This is for my graph
-*//*
 .node {
       fill: #ccc;
       stroke-width: 2px;
@@ -77,11 +69,23 @@
       stroke: #777;
       stroke-width: 2px;
     }
-
 text {
       fill: #000;
       font: 10px sans-serif;
       pointer-events: none;
     }
 
-    */
+
+
+/*.dogIntakeProfile {
+
+}
+
+
+.dogFriendGraph{
+  
+}*/
+
+
+
+

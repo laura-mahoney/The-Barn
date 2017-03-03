@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Add Pupdate</h1>
+<h3>Add Pupdate</h3>
 <script src="https://code.jquery.com/jquery.js" type="text/javascript"></script>
 Shift ID: {{ shift_id }}
 Shift Date: {{ new_shift.date_time }}
@@ -146,7 +146,7 @@ Shift Date: {{ new_shift.date_time }}
 </div>
 {% endfor %}
 
-<h1>Add General Notes</h1><br>
+<h3>Add General Notes</h3><br>
 
 <form action="/submitnotes" id="generalNotes" method="POST">
     <input type="text" name="notes"><br>
