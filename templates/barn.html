@@ -28,7 +28,7 @@ Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
             {% endfor %}
         </select>
     </div>
-    <input type="submit" name="createshift" value="Add Shift Notes"><br>
+    <input type="submit" id="submitButton" name="createshift" value="Add Shift Notes"><br>
 </form>
 
 
@@ -44,18 +44,18 @@ Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
             console.log(dogNodes);
             console.log(dogLinks);   
 
-            var width = 800;
-            var height = 600;
+            var width = 600;
+            var height = 500;
 
-            var svg = d3.select('body')
+            var svg = d3.select('#intakeData')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height);
 
             var force = d3.forceSimulation(d3.values(dogNodes))
-                .force("link", d3.forceLink(dogLinks).distance(100))
+                .force("link", d3.forceLink(dogLinks).distance(200))
                 .force("center", d3.forceCenter(width / 2, height/ 2))
-                .force("charge", d3.forceManyBody().strength(-2));
+                .force("charge", d3.forceManyBody().strength(-50));
 
             var link = svg.selectAll('.link')
                 .data(dogLinks)
@@ -72,15 +72,16 @@ Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
             var color = d3.scaleOrdinal(d3.schemeCategory10);
 
             node.append("circle")
-                .attr("r", 10)
+                .attr("r", 35)
                 .style("fill", function (d) {
                     console.log(d.source);
-                    return color(d.source);
-                });
+                    // return color(d.source);
+                }).classed("graphCircle", true);
 
             node.append("text").text(function (d) {
                 return d.node;
-            });
+            }).classed("graphText", true);
+
 
             force.on('end', function () {
 
@@ -109,38 +110,24 @@ Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
     </script>
 </div>
 
-
 <br>
-{% for dog in dogs %}
+<div class="mainBoard row">
+    <div class="row col-md-6" id="dogPictures">
+    {% for dog in dogs %}
 
-   <div>
-    <h3>
-        <p class="dogProfile" data-dog="{{ dog.dog_id }}" style="display: none">{{ dog.dog_name }}</p>
-        </h3>
-   </div>
-   
-   <img src= "static/images/{{ dog.dog_name }}.jpg" id="dogp{{ dog.dog_id }}" class="dogPicture" data-dog="{{ dog.dog_id }}">
-   <div class="dogIntakeProfile" id="{{ dog.dog_id }}" style="display: none;"><br>
-<br>
-Name: {{ dog.dog_name }}<br>
+       <div>
+            <p class="dogProfile" data-dog="{{ dog.dog_id }}" style="display: none">{{ dog.dog_name }}</p>
+       </div>
+       
+       <img src= "static/images/{{ dog.dog_name }}.jpg" id="dogp{{ dog.dog_id }}" class="dogPicture col-md-2" data-dog="{{ dog.dog_id }}">
 
-Latest Pupdate: <br>
-{% for dogshift in recent_dogshifts %}
-    {% if dog.dog_id == dogshift.dog_id %}
-        {{ dogshift.notes }}      
-    {% endif %}
-{% endfor %}<br>
+    {% endfor %}
 
-Kennel ID: {{ dog.kennel_id }}<br>
-Breed: {{ dog.breed }}<br>
-Gender: {{ dog.gender }}<br>
-Altered: {{ dog.altered }}<br> 
-Age: {{ dog.age }}<br>
-Intake Date: {{ dog.intake_date }}<br>
-<br>
     </div>
-</form>
 
-
-{% endfor %}
+    <div id="dogData" class="row col-md-6">
+        <div id="intakeData"></div>
+        <canvas class="dogCommandsGraph" id="comChart" width="200" height="200"></canvas>
+    </div>
+</div>
 {% endblock %}

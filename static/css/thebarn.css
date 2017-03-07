@@ -1,13 +1,70 @@
 
+.mainBoard{
+  padding: 50px;
+}
+
+
+#dogPictures{
+  padding: 50px;
+}
+
+#intakeData{
+  padding: 50px;
+  
+
+}
 
 .dogPicture   {
-    border-radius: 80px;
+    border-radius: 50%;
     height: 200px;
     width: 200px;
     padding: 10px;
 }
 
-#dogp1   {
+.container {
+  margin: 0;
+  width: 100%;
+}
+
+.textbox {
+  height: 200px;
+  width: 700px; 
+  border: 1px solid;
+  border-radius: 25px;
+}
+
+.pupdatebox {
+  height: 50px;
+  width: 150px; 
+  border: 1px solid;
+  border-radius: 25px;
+}
+
+#submitButton {
+    background-color: #a0d8f3; 
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#pupdateButton {
+    background-color: #a0d8f3; 
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+
+
+/*#dogp1   {
     float: left;
   
 
@@ -58,7 +115,7 @@
     float: left;
 
 }
-
+*/
 
 .node {
       fill: #ccc;
@@ -67,7 +124,7 @@
 
 .link {
       stroke: #777;
-      stroke-width: 2px;
+      stroke-width: 3px;
     }
 text {
       fill: #000;
@@ -88,14 +145,35 @@ text {
 
 
 
-/*.dogIntakeProfile {
-
+.dogIntakeProfile {
+  vertical-align: top;
+  top: 0;
+  right:0;
 }
 
 
 .dogFriendGraph{
+  right: 0;
+  vertical-align: top;
   
-}*/
+}
+
+.dogCommandsGraph {
+  max-height: 450px;
+  max-width: 500px;
+  right: 0;
+
+}
+
+.graphCircle{
+  fill: #a0d8f3;
+}
+
+.graphText{
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 14px;
+}
 
 
 

@@ -11,6 +11,9 @@ Shift Date: {{ new_shift.date_time }}
   <p class="dogNames" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}
   <img src= "static/images/{{ dog.dog_name }}.jpg" id="miniDogp{{ dog.dog_id }}" class="miniDogPicture"></p>
   </div>
+  <div>
+     <img src= "static/images/bone.png" id="{{ dog.dog_id }}bone" style="display: none;">
+  </div>
 
   <div class="dogForm" id="{{ dog.dog_id }}" style="display: none;">
 <!-- this page will provide a form for daily shift entries, the intake information will eventually include playmates -->
@@ -138,23 +141,24 @@ Shift Date: {{ new_shift.date_time }}
         </select>
     </div>
     <br>
-    <input type="text" name="pupdatenotes">
+    <input type="text" class="pupdatebox" name="pupdatenotes">
     <br>
-    <input type="submit" value="sendpupdate">
+    <input type="submit" id="pupdateButton" value="Submit Pupdate">
     <br>
+    
     <input type="hidden" name="shift-id" value={{ shift_id }}>
     <input type="hidden" name="dog-id" value={{ dog.dog_id }}>
 </form>
 </div>
 {% endfor %}
 
-<h4>Add General Notes</h4><br>
+<h4>Add Shift Notes</h4><br>
 
 <form action="/submitnotes" id="generalNotes" method="POST">
-    <input type="text" name="notes"><br>
+    <input type="text" class="textbox" name="notes"><br>
     <br>
     <input type="hidden" name="shift-id" value={{ shift_id }}>
-    <input type="submit" value="Submit Shift Notes"><br>
+    <input type="submit" id="submitButton" value="Submit Shift Notes"><br>
 </form>
 <br>
 <br>

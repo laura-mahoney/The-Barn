@@ -5,33 +5,89 @@
 
 $(document).ready(function(){
 
-var proclicks = 0;
-//this function shows and hides the intake information for a given dog on the barn page
-function showIntakeData(evt){
-    $('.dogIntakeProfile').hide();
+// var proclicks = 0;
+// //this function shows and hides the intake information for a given dog on the barn page
+// function showIntakeData(evt){
+//     $('.dogIntakeProfile').hide();
    
+//     var allDogs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+//     var thisDog = evt.target.attributes['data-dog'].value;
+
+//     for(var i = 0; i<=allDogs.length; i++){
+//         if(i != thisDog){
+//             $("#dogp" + i).fadeTo("slow", 0.33)
+//         };
+//     };
+
+//     var currentDogProfile = evt.target.attributes['data-dog'].value;
+    
+//     if(proclicks%2 == 0){
+//         $('.dogIntakeProfile').hide();
+//         $("#" + currentDogProfile).show();
+//         $(".dogFriendGraph").show();
+//         $(".dogCommandsGraph").show();
+//         proclicks = proclicks + 1;
+
+//     } else {
+//         $("#" + currentDogProfile).hide();
+//         proclicks = proclicks + 1;
+//         $('.dogPicture').fadeTo("fast", 1);
+//         $(".dogFriendGraph").hide();
+//         $(".dogCommandsGraph").hide();
+//     };
+
+
+// }
+
+// $(".dogPicture").on("click", showIntakeData);
+
+// Kennel ID: {{ dog.kennel_id }}<br>\
+// Breed: {{ dog.breed }}<br>\
+// Gender: {{ dog.gender }}<br>\
+// Altered: {{ dog.altered }}<br>\ 
+// Age: {{ dog.age }}<br>\
+// Intake Date: {{ dog.intake_date }}<br>\
+// <br>\
+
+var proclicks = 0;
+
+function dataShown(results){
+    console.log(results);
+    $("#intakeData").html("");
+
+    proclicks++;
+
     var allDogs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-    var thisDog = evt.target.attributes['data-dog'].value;
+    var thisDog = results.dogid;
 
-    for(var i = 0; i<=allDogs.length; i++){
-        if(i != thisDog){
-            $("#dogp" + i).fadeTo("slow", 0.33)
-        };
-    };
 
-    var currentDogProfile = evt.target.attributes['data-dog'].value;
+    // var currentDogProfile = evt.target.attributes['data-dog'].value;
     
     if(proclicks%2 == 0){
-        $('.dogIntakeProfile').hide();
-        $("#" + currentDogProfile).show();
-        proclicks = proclicks + 1;
+        $("#dogData").html("");
+        proclicks = 0;
+        $('.dogPicture').fadeTo("fast", 1);
 
     } else {
-        $("#" + currentDogProfile).hide();
-        proclicks = proclicks + 1;
-        $('.dogPicture').fadeTo("fast", 1);
+        for(var i = 0; i<=allDogs.length; i++){
+            if(i != thisDog){
+                $("#dogp" + i).fadeTo("slow", 0.33)
+            }
+        }
+
+        $("#intakeData").append("<p>\
+        Name:" + results.name + "\
+        Kennel:" + results.kennel + "</p>");
+
     };
 
+}
+
+function showIntakeData(evt){
+    evt.preventDefault();
+    var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
+
+    $.get("/getintakedata", currentDogId, dataShown);
 
 }
 
@@ -41,18 +97,40 @@ $(".dogPicture").on("click", showIntakeData);
 
 
 
+function makeCommandsGraph(data){
+        var ctx = document.getElementById("comChart");
+        var commandGraph = new Chart(ctx, {
+            type: 'bar',
+            data: data.command_data,
+            options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                                    }
+                                }]
+                            }
+                        }
+          });
+
+        }
+
+
+
+
 // success function shows dog report
 function playmatesReceived(data){
     console.log("Id received from server");
     makeTreeGraph(data);
+    makeCommandsGraph(data);
 };
 //an AJAX get request that searches the database for all the dog's playmates to display
 function checkPlaymates(evt){
     evt.preventDefault();
 
     var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
-    
-    $.post("/playmates.json", currentDogId, playmatesReceived);
+
+    $.post("/reports.json", currentDogId, playmatesReceived);
 
 };
 
@@ -93,6 +171,7 @@ $(".dogNames").on("click", showDogForm);
 // ///////////this function adds form data/pupdates to the database
 function pupdateSuccess(){
     $('.dogForm').hide();
+    $('#' + currentDogId + 'bone').show();
     // $(this).prop("disabled", true); test this 
     console.log('Successfully Pupdated!');
 }

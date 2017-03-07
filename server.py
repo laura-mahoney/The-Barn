@@ -296,19 +296,102 @@ def post_notes():
     return redirect("/thebarn")
 
 
-@app.route('/playmates.json', methods=['GET', 'POST'])
+@app.route('/getintakedata', methods=['GET'])
+def get_intake():
+
+    
+    current_id = request.args.get('currentDogId')
+
+    recent_shift = Shift.query.order_by(Shift.date_time.desc()).first().shift_id#query for most recent notes by date and time
+    recent_notes = Shift.query.get(recent_shift)
+    
+    recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() 
+    intake_data = Dog.query.get(int(current_id))
+
+    recent_dog_notes = []
+
+    for recent in recent_dogshifts:
+        if recent.dog_id == int(current_id):
+            recent_dog_notes.append(recent.notes)
+
+    data = {'recentnotes': recent_dog_notes, 'dogid': int(current_id), 'name': intake_data.dog_name, 'kennel': intake_data.kennel_id, 'age': intake_data.age, 'breed': intake_data.breed, 'intakedate': intake_data.intake_date, 'gender': intake_data.gender, 'altered': intake_data.altered}
+
+
+    return jsonify(data)
+
+@app.route('/reports.json', methods=['GET', 'POST'])
 def get_reports():
     """Query the database to get dog friends and dog reports """
-    #current dog's id
+    #current dog's id and name 
     current_id = request.form.get('currentDogId')
     current_name = Dog.query.get(current_id).dog_name
     print current_name 
+
     #querying for the current dog's playmates 
     dog_playmates = Dogplaymates.query.filter_by(dog_id=current_id).all()
 
     #alll of the dog objects
     # dogs = db.session.query(Dog).all()
 
+    #query for dogshifts of this dog to get scores of the current dog 
+    dsids = []
+
+    dogsid = Dogshift.query.filter_by(dog_id=current_id).all()
+    for item in dogsid:
+         dsids.append(item.dogshift_id) 
+
+
+    scores = []
+    for item in dsids: 
+        dogscore = Dogshiftcommands.query.filter_by(dogshift_id=item).one()
+        scores.append(dogscore.score)
+    
+    #get the averages of all the scores
+    averages = {'wait': 0, 'sit': 0, 'down': 0, 'drop': 0, 'leaveit': 0, 'shake': 0, 'stay': 0}
+
+    for item in scores:
+        averages['wait']=averages['wait']+int(item[0])
+        averages['sit']=averages['sit']+int(item[1])
+        averages['down']=averages['down']+int(item[2])
+        averages['drop']=averages['drop']+int(item[3])
+        averages['leaveit']=averages['leaveit']+int(item[4])
+        averages['shake']=averages['shake']+int(item[5])
+        averages['stay']=averages['stay']+int(item[6])
+
+    if len(scores)>1:
+        for key in averages:
+            averages[key] = averages[key]/len(scores)
+
+    average_score = []
+    average_score.append(averages)
+
+
+    command_data = {
+     "labels": averages.keys(),
+                "datasets": [
+                    {
+                        "data": averages.values(),
+                        "backgroundColor": [
+                            "#70ffca",
+                            "#70ffca",
+                            "#70ffca",
+                            "#70ffca",
+                            "#70ffca",
+                            "#70ffca",
+                            "#70ffca",
+                            "#70ffca",
+                        ],
+                        "hoverBackgroundColor": [
+                            "#FF6384",
+                            "#36A2EB",
+                        ]
+
+                    }]
+        }
+    
+    print averages['wait']
+    print averages['sit']
+    print averages['shake']
 
     #a list of all the current dog's dog friend ids, not unique  
     dog_friends_ids = []
@@ -349,23 +432,6 @@ def get_reports():
             dog_nodes.append(dog_names)
 
     print dog_nodes
-    
-    #looping over the dog list to gather frequency of dog friendships 
-
-    #make nodes and links for graph out of the unique dog ids 
-    #nodes
-
-    # dog_nodes = []
-    # unique_ids=dog_frequency.keys()
-
-    # for dog_id in unique_ids: 
-        
-    #     dog_dict = {}
-
-    #     dog_dict['node']=dog_id
-    #     dog_dict['source']=int(current_id)
-        
-    #     dog_nodes.append(dog_dict)
 
     #links are just indices based on the length of the dog nodes
     dog_links = []
@@ -374,35 +440,8 @@ def get_reports():
         dog_links.append(link)
 
     print dog_links  
-
-    # for dog_id in unique_ids:
-    #     link_dict = {}
-
-    #     link_dict['source']=0
-    #     link_dict['target']=dog_id
-    #     link_dict['value']=dog_frequency[dog_id] #this is the value of frequency 
-
-    #     dog_links.append(link_dict)
-
-    # for i in dog_links:
-    #     print i
-
-    # for i in dog_nodes:
-    #     print i
-
     
-    return jsonify({'dog_nodes': dog_nodes, 'dog_links': dog_links})
-
-# @app.route('/getscores', methods=['GET', 'POST'])
-# def get_reports():
-#     """ Query the database for command scores for each dog for graphing"""
-#     pass
-
-
-
-
-
-
+    return jsonify({'dog_nodes': dog_nodes, 'dog_links': dog_links, 'command_data': command_data})
 
 
 if __name__ == '__main__':
