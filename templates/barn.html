@@ -1,35 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="greeting">
+    <br>Welcome to The Barn, {{ crew.fname }}<br>
+</div><br>
 
-<br>Welcome to The Barn {{ crew.fname }}<br>
-
-Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
-
-<form action="/addnotes" method="POST">
+<div class="recentAddNotes row col-md-9">
+    Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
     <br>
-    <div id="shiftTime">
-        <input type="date" name="date">
-        <input type="time" name="time">
-    </div>
-    <div id="shiftDuration">
-        <select name="duration_shift">
-            <option value="Duration" name="duration">Duration</option>
-            <option value="1 hour" name="duration">1 hour</option>
-            <option value="2 hours" name="duration">2 hours</option>
-            <option value="3 hours" name="duration">3 hours</option>
-            <option value="4 hours" name="duration">4 hours</option>
-        </select>
-    </div>
-    <div id="otherCrew">
-        <select name="crew_name">
-                <option value="support">Support</option>
-            {% for crew in all_crew %}
-                <option value="{{ crew.fname }}">{{ crew.fname }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <input type="submit" id="submitButton" name="createshift" value="Add Shift Notes"><br>
-</form>
+
+    <form action="/addnotes" method="POST">
+        <br>
+        <div id="shiftTime">
+            <input type="date" name="date">
+            <input type="time" name="time">
+        </div>
+        <div id="shiftDuration">
+            <select name="duration_shift">
+                <option value="Duration" name="duration">Duration</option>
+                <option value="1 hour" name="duration">1 hour</option>
+                <option value="2 hours" name="duration">2 hours</option>
+                <option value="3 hours" name="duration">3 hours</option>
+                <option value="4 hours" name="duration">4 hours</option>
+            </select>
+        </div>
+        <div id="otherCrew">
+            <select name="crew_name">
+                    <option value="support">Support</option>
+                {% for crew in all_crew %}
+                    <option value="{{ crew.fname }}">{{ crew.fname }}</option>
+                {% endfor %}
+            </select>
+        </div><br>
+        <br>
+        <input type="submit" id="submitButton" name="createshift" value="Add Shift Notes"><br>
+    </form>
+</div>
 
 
 <div class="dogFriendGraph">
@@ -125,9 +130,11 @@ Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
 
     </div>
 
-    <div id="dogData" class="row col-md-6">
+    <div class="row col-md-6">
         <div id="intakeData"></div>
-        <canvas class="dogCommandsGraph" id="comChart" width="200" height="200"></canvas>
+        <div id="dogData">
+            <canvas class="dogCommandsGraph" id="comChart" width="200" height="200"></canvas>
+        </div>
     </div>
 </div>
 {% endblock %}

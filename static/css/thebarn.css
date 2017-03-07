@@ -10,8 +10,20 @@
 
 #intakeData{
   padding: 50px;
-  
 
+}
+
+.recentAddNotes{
+  padding: 30px;
+  border-radius: 15px;
+  background-color: #eaeaea;
+  font-size: 18px;
+
+}
+
+
+.greeting{
+  font-size: 20px;
 }
 
 .dogPicture   {
@@ -24,42 +36,56 @@
 .container {
   margin: 0;
   width: 100%;
+
 }
 
 .textbox {
   height: 200px;
   width: 700px; 
   border: 1px solid;
-  border-radius: 25px;
+  border-radius: 15px;
 }
 
 .pupdatebox {
   height: 50px;
   width: 150px; 
   border: 1px solid;
-  border-radius: 25px;
+  border-radius: 15px;
 }
 
 #submitButton {
     background-color: #a0d8f3; 
-    border: none;
+    border: #a0d8f3 1px solid;
     color: black;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
 }
 
 #pupdateButton {
     background-color: #a0d8f3; 
-    border: none;
+    border: #a0d8f3 1px solid;
     color: black;
     padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+#submitButton:hover {
+  background-color: white;
+}
+
+#pupdateButton:hover {
+  background-color: white;
 }
 
 

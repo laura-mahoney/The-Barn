@@ -145,7 +145,7 @@ Shift Date: {{ new_shift.date_time }}
     <br>
     <input type="submit" id="pupdateButton" value="Submit Pupdate">
     <br>
-    
+
     <input type="hidden" name="shift-id" value={{ shift_id }}>
     <input type="hidden" name="dog-id" value={{ dog.dog_id }}>
 </form>
@@ -156,8 +156,7 @@ Shift Date: {{ new_shift.date_time }}
 
 <form action="/submitnotes" id="generalNotes" method="POST">
     <input type="text" class="textbox" name="notes"><br>
-    <br>
-    <input type="hidden" name="shift-id" value={{ shift_id }}>
+    <input type="hidden" name="shift-id" value={{ shift_id }}><br>
     <input type="submit" id="submitButton" value="Submit Shift Notes"><br>
 </form>
 <br>

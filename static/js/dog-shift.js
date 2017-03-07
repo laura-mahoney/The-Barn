@@ -64,21 +64,32 @@ function dataShown(results){
     // var currentDogProfile = evt.target.attributes['data-dog'].value;
     
     if(proclicks%2 == 0){
-        $("#dogData").html("");
+        $("#dogData").addClass("hidden");
+        $("#intakeData").addClass("hidden");
+
         proclicks = 0;
         $('.dogPicture').fadeTo("fast", 1);
 
     } else {
+        $("#dogData").removeClass("hidden");
+        $("#intakeData").removeClass("hidden");
+
+
         for(var i = 0; i<=allDogs.length; i++){
             if(i != thisDog){
                 $("#dogp" + i).fadeTo("slow", 0.33)
             }
         }
 
-        $("#intakeData").append("<p>\
-        Name:" + results.name + "\
-        Kennel:" + results.kennel + "</p>");
-
+        $("#intakeData").html("<p>" +
+        "Name:" + results.name +"<br>" +
+        "Kennel:" + results.kennel +"<br>" +
+        "Breed:" + results.breed +"<br>" +
+        "Gender:" + results.gender + "<br>" +
+        "Altered:" + results.altered + "<br>" +
+        "Age:" + results.age + "<br>" +
+        "Intake Date:" + results.intakedate + "<br>" +
+        "Latest Pupdate:" + results.recentnotes + "</p>");
     };
 
 }
@@ -134,6 +145,21 @@ function checkPlaymates(evt){
 
 };
 
+/*
+$(".dogPicture").on('click', handleClick;
+
+function handleClick()
+{
+    // Get the current clicked picture.
+    // If currentItem matches clicked item, return... do nothing
+    // If nothing clicked, clear current item
+    // Save the current click as current item
+    // Load new data
+
+    
+}
+
+*/
 
 $(".dogPicture").on('click', checkPlaymates);
 
