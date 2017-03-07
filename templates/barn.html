@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="greeting">
-    <br>Welcome to The Barn, {{ crew.fname }}<br>
-</div><br>
+    <br>Welcome to The Barn, {{ crew.fname }}
+</div>
 
 <div class="recentAddNotes row col-md-9">
-    Latest Notes from {{ recent_notes.date_time }}:<br>{{ recent_notes.notes }}<br>
+    Latest Notes from {{ recent_notes.date_time }}:<br><br>{{ recent_notes.notes }}<br>
+    <br>
     <br>
 
     <form action="/addnotes" method="POST">
@@ -32,7 +33,7 @@
             </select>
         </div><br>
         <br>
-        <input type="submit" id="submitButton" name="createshift" value="Add Shift Notes"><br>
+        <input type="submit" id="submitButton" name="createshift" value="ADD SHIFT NOTES"><br>
     </form>
 </div>
 

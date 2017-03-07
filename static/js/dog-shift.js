@@ -5,50 +5,6 @@
 
 $(document).ready(function(){
 
-// var proclicks = 0;
-// //this function shows and hides the intake information for a given dog on the barn page
-// function showIntakeData(evt){
-//     $('.dogIntakeProfile').hide();
-   
-//     var allDogs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-//     var thisDog = evt.target.attributes['data-dog'].value;
-
-//     for(var i = 0; i<=allDogs.length; i++){
-//         if(i != thisDog){
-//             $("#dogp" + i).fadeTo("slow", 0.33)
-//         };
-//     };
-
-//     var currentDogProfile = evt.target.attributes['data-dog'].value;
-    
-//     if(proclicks%2 == 0){
-//         $('.dogIntakeProfile').hide();
-//         $("#" + currentDogProfile).show();
-//         $(".dogFriendGraph").show();
-//         $(".dogCommandsGraph").show();
-//         proclicks = proclicks + 1;
-
-//     } else {
-//         $("#" + currentDogProfile).hide();
-//         proclicks = proclicks + 1;
-//         $('.dogPicture').fadeTo("fast", 1);
-//         $(".dogFriendGraph").hide();
-//         $(".dogCommandsGraph").hide();
-//     };
-
-
-// }
-
-// $(".dogPicture").on("click", showIntakeData);
-
-// Kennel ID: {{ dog.kennel_id }}<br>\
-// Breed: {{ dog.breed }}<br>\
-// Gender: {{ dog.gender }}<br>\
-// Altered: {{ dog.altered }}<br>\ 
-// Age: {{ dog.age }}<br>\
-// Intake Date: {{ dog.intake_date }}<br>\
-// <br>\
-
 var proclicks = 0;
 
 function dataShown(results){
@@ -82,14 +38,18 @@ function dataShown(results){
         }
 
         $("#intakeData").html("<p>" +
-        "Name:" + results.name +"<br>" +
-        "Kennel:" + results.kennel +"<br>" +
-        "Breed:" + results.breed +"<br>" +
-        "Gender:" + results.gender + "<br>" +
-        "Altered:" + results.altered + "<br>" +
-        "Age:" + results.age + "<br>" +
-        "Intake Date:" + results.intakedate + "<br>" +
-        "Latest Pupdate:" + results.recentnotes + "</p>");
+        "Intake Data" + "<br>" + "<br>" + 
+        "Name:  " + results.name +"<br>" +
+        "Latest Pupdate:  " + results.recentnotes + "<br>" +
+        "<br>" +
+        "Kennel:  " + results.kennel +"<br>" +
+        "Breed:  " + results.breed +"<br>" +
+        "Gender:  " + results.gender + "<br>" +
+        "Altered:  " + results.altered + "<br>" +
+        "Age:  " + results.age + "<br>" +
+        "Intake Date:  " + results.intakedate + "<br>" + 
+        "<br>" +
+        "<br>" + "Playmate and Behavioral Skills Graphs" + "</p>");
     };
 
 }
@@ -114,12 +74,26 @@ function makeCommandsGraph(data){
             type: 'bar',
             data: data.command_data,
             options: {
+                    legend: {
+                        display: false
+                            },
                     scales: {
                         yAxes: [{
                             ticks: {
-                                beginAtZero:true
+                                beginAtZero:true,
+                                fontSize: 18,
+                                fontFamily: "Raleway"
+
                                     }
-                                }]
+                                }],
+                        xAxes: [{
+                            ticks: {
+                                fontSize: 18,
+                                fontFamily: "Raleway"
+
+                            }
+                        }]
+
                             }
                         }
           });
@@ -144,22 +118,6 @@ function checkPlaymates(evt){
     $.post("/reports.json", currentDogId, playmatesReceived);
 
 };
-
-/*
-$(".dogPicture").on('click', handleClick;
-
-function handleClick()
-{
-    // Get the current clicked picture.
-    // If currentItem matches clicked item, return... do nothing
-    // If nothing clicked, clear current item
-    // Save the current click as current item
-    // Load new data
-
-    
-}
-
-*/
 
 $(".dogPicture").on('click', checkPlaymates);
 
@@ -224,26 +182,6 @@ function addPupdates(evt){
 };
 
 $(".pupdateForm").submit(addPupdates);
-
-
-
-
-
-// //an AJAX get request that calculates all scores of dogs and displays number
-// function displayCommandsScore(){
-    
-//     $.get()
-// };
-
-
-
-
-// //an AJAX get request that reports all actvities over a week for a specific dog
-// function reportCommandsScore(){
-//     return true
-// };
-
-
 
 });
 

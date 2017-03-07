@@ -12,20 +12,6 @@ from datetime import datetime, time, date
 from sqlalchemy import desc
 from json import loads 
 
-""" facebook authentication """
-
-# APP_ID = os.environ['APP_ID']
-# APP_SECRET = os.environ['APP_SECRET']
-# authorization_base_url = 'https://www.facebook.com/dialog/oauth'
-# token_url =  'http://graph.facebook.com/oauth/access_token'
-# redirect_uri = 'https://localhost:5000/process_login'
-
-
-# facebook = OAuth2Session(APP_ID, redirect_uri=redirect_uri)
-# facebook = facebook_compliance_fix(facebook)
-
-# os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-
 app = Flask(__name__)
 
 app.secret_key = "hghghghg"
@@ -33,17 +19,7 @@ app.secret_key = "hghghghg"
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-# assets = Environment(app)
-
 app.jinja_env.undefined = StrictUndefined
-# assets.url = app.static_url_path
-# app.config['ASSETS_DEBUG'] = True
-
-
-# def save_created_state(state):
-#     pass
-# def is_valid_state(state):
-#     return True
 
 
 #routes
@@ -56,43 +32,11 @@ def index_page():
 
     return render_template("homepage.html")
 
-# @app.route('/login')
-# def login():
-#     """ Loggin In With Facebook"""
-#     authorization_url, state = facebook.authorization_url(authorization_base_url)
-#     print 'Please authorize', authorization_url
-
-#     return redirect(authorization_url, code=302)
-
-
 @app.route('/register', methods=["GET"])
 def register_form():
     """ Show form for user signup."""
 
     return render_template("register_form.html")
-
-
-# @app.route('/process_login')
-# def facebook_auth():
-#"""Process login with facebook """
-
-#     error = request.args.get('error', '')
-#     if error:
-#         return "Error: " + error
-
-#     state = request.args.get('state', '')
-
-#     if not is_valid_state(state):
-#         abort(403)
-#     code = request.args.get('code')
-#     print 20 * '*'
-#     print code
-    
-#     facebook.fetch_token(token_url, APP_SECRET=APP_SECRET, authorization_response="http://localhost:5000/process_login?code="+code+"&state"+state)
-
-#     r = facebook.get('https://graph.facebook.com/me?')
-#     return render_template('base.html', content=r.content)
-
 
 
 @app.route('/register', methods=['POST'])
@@ -140,8 +84,6 @@ def sign_in_process():
         return redirect("/sign_in")
 
     session["crew_id"] = crew.crew_id
-    # Barncrew.query.get(session["crew_id"])
-
     
     shift_id = Shift.query.all()
     all_crew = Barncrew.query.all()
@@ -150,8 +92,6 @@ def sign_in_process():
     recent_notes = Shift.query.get(recent_shift)
 
     recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
-
-    # previous_dogshift = Dogshift.query.get(recent_shift-1).all()
 
     flash("Logged in")
     return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, shift_id=shift_id, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts)
@@ -163,14 +103,11 @@ def logged_in():
     crew = Barncrew.query.get(session['crew_id'])
     dogs = db.session.query(Dog).all()
     
-    #shift_id = Shift.query.all()
     all_crew = Barncrew.query.all()
     recent_shift = Shift.query.order_by(Shift.date_time.desc()).first().shift_id#query for most recent notes by date and time
     recent_notes = Shift.query.get(recent_shift)
     
     recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
-
-    # previous_dogshift = Dogshift.query.filter(Dogshift.shift_id==(recent_shift-1)).all()
 
     return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts)
 
@@ -288,8 +225,6 @@ def post_notes():
     shift = Shift.query.get(shift_id)
     shift.notes = request.form.get('notes')
     
-    # shift_id = Shift.query.get(session['shift_id']) #querying databse for shift_id stored in session
-
     db.session.commit()
 
     flash("You've added general barn notes!")
@@ -330,9 +265,6 @@ def get_reports():
     #querying for the current dog's playmates 
     dog_playmates = Dogplaymates.query.filter_by(dog_id=current_id).all()
 
-    #alll of the dog objects
-    # dogs = db.session.query(Dog).all()
-
     #query for dogshifts of this dog to get scores of the current dog 
     dsids = []
 
@@ -347,16 +279,16 @@ def get_reports():
         scores.append(dogscore.score)
     
     #get the averages of all the scores
-    averages = {'wait': 0, 'sit': 0, 'down': 0, 'drop': 0, 'leaveit': 0, 'shake': 0, 'stay': 0}
+    averages = {'Wait': 0, 'Sit': 0, 'Down': 0, 'Drop': 0, 'Leave It': 0, 'Shake': 0, 'Stay': 0}
 
     for item in scores:
-        averages['wait']=averages['wait']+int(item[0])
-        averages['sit']=averages['sit']+int(item[1])
-        averages['down']=averages['down']+int(item[2])
-        averages['drop']=averages['drop']+int(item[3])
-        averages['leaveit']=averages['leaveit']+int(item[4])
-        averages['shake']=averages['shake']+int(item[5])
-        averages['stay']=averages['stay']+int(item[6])
+        averages['Wait']=averages['Wait']+int(item[0])
+        averages['Sit']=averages['Sit']+int(item[1])
+        averages['Down']=averages['Down']+int(item[2])
+        averages['Drop']=averages['Drop']+int(item[3])
+        averages['Leave It']=averages['Leave It']+int(item[4])
+        averages['Shake']=averages['Shake']+int(item[5])
+        averages['Stay']=averages['Stay']+int(item[6])
 
     if len(scores)>1:
         for key in averages:
@@ -372,26 +304,27 @@ def get_reports():
                     {
                         "data": averages.values(),
                         "backgroundColor": [
-                            "#70ffca",
-                            "#70ffca",
-                            "#70ffca",
-                            "#70ffca",
-                            "#70ffca",
-                            "#70ffca",
-                            "#70ffca",
-                            "#70ffca",
+                            "#96FFF3",
+                            "#96D7FF",
+                            "#96A2FF",
+                            "#96FFBF",
+                            "#A2FF96",
+                            "#8BFCE6",
+                            "#A1BFFF"
                         ],
                         "hoverBackgroundColor": [
-                            "#FF6384",
-                            "#36A2EB",
+                            "#C0C2C0",
+                            "#C0C2C0",
+                            "#C0C2C0",
+                            "#C0C2C0",
+                            "#C0C2C0",
+                            "#C0C2C0",
+                            "#C0C2C0"
                         ]
 
                     }]
         }
     
-    print averages['wait']
-    print averages['sit']
-    print averages['shake']
 
     #a list of all the current dog's dog friend ids, not unique  
     dog_friends_ids = []
@@ -400,15 +333,6 @@ def get_reports():
         dog_friends_ids.append(friends.play_mate1)
         dog_friends_ids.append(friends.play_mate2)
     
-    #counts the frequency of a dog friendship 
-    # dog_frequency={}
-
-    # for friends in dog_friends_ids:
-    #     if friends in dog_frequency:
-    #         dog_frequency[friends] += 1
-    #     else: 
-    #         dog_frequency[friends] = 1
-
 
     #this initializes the first index of the node list as a dictionary with nodes and sources defined as the current dog's dog name
     dog_nodes = []

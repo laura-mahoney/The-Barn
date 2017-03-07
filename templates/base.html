@@ -4,27 +4,39 @@
     <title></title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/css/thebarn.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:600,700|Raleway:400,500" rel="stylesheet">
 </head>
 
 <body>
-<div class="container-fluid"> 
-       
-    {% if "crew_id" in session %}
-        <a href="/thebarn">The Barn</a>
-        <a href="/calendar">Shift Calendar</a>
-        <a href="/logout">Logout</a>
-    {% else %}
-        <a href="/sign_in">Sign In</a>
-        <a href="about.html">About</a>
-        <a href="/register">Register</a>
-    {% endif %}
+<nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Pupdates</a>
+            </div>
+            <div id="navbar">
+                <ul class="nav navbar-nav">
+                    {% if "crew_id" in session %}
+                    <li><a href="/thebarn">The Barn</a></li>
+                    <li><a href="/calendar">Shift Calendar</a></li>
+                    <li><a href="/logout">Logout</a></li>
+                    {% else %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/sign_in">Sign In</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="/register">Register</a></li>
+                    {% endif %}
+                </ul>
+    {% for flash in get_flashed_messages() %}
+      {{ flash }}
+    {% endfor %}
+               
+            </div>
+        </div>
+    </nav>
 
-{% for flash in get_flashed_messages() %}
-  {{ flash }}
-{% endfor %}
-
-</div>
 <div class="container">
+    
 
  
 

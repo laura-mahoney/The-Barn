@@ -1,23 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="formHeadings">
+    <h1>Add Pupdates</h1><br>
+</div>
 
-<h4>Add Pupdate</h4>
 <script src="https://code.jquery.com/jquery.js" type="text/javascript"></script>
-Shift ID: {{ shift_id }}
-Shift Date: {{ new_shift.date_time }}
+
+<div class="subText">
+    {{ crew.fname }}, provide pupdates for the following shift: <br>{{ new_shift.date_time }}<br><br>
+</div>
 
 {% for dog in dogs %}
-  <div>
-  <p class="dogNames" data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}
-  <img src= "static/images/{{ dog.dog_name }}.jpg" id="miniDogp{{ dog.dog_id }}" class="miniDogPicture"></p>
-  </div>
-  <div>
-     <img src= "static/images/bone.png" id="{{ dog.dog_id }}bone" style="display: none;">
-  </div>
+    <div class="dogNames">
+        <p data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
+    </div>
 
-  <div class="dogForm" id="{{ dog.dog_id }}" style="display: none;">
+    <div>
+        <img src= "static/images/{{ dog.dog_name }}.jpg" class="miniDogPicture" id="miniDogp{{ dog.dog_id }}">
+    </div>
+  
+    <div class="icon">
+        <img src= "static/images/bone.png" id="{{ dog.dog_id }}bone" style="display: none;">
+    </div>
+
+    <div class="dogForm" id="{{ dog.dog_id }}" style="display: none;">
 <!-- this page will provide a form for daily shift entries, the intake information will eventually include playmates -->
-{{ crew.fname }}, provide a pupdate for {{ dog.dog_name }}<br>
+<br>
 
 <!-- the form will submit data to database about the dogs activities per shift -->
 <form class="pupdateForm" action="/dog/notes" method="POST">
@@ -143,7 +151,9 @@ Shift Date: {{ new_shift.date_time }}
     <br>
     <input type="text" class="pupdatebox" name="pupdatenotes">
     <br>
+    <br>
     <input type="submit" id="pupdateButton" value="Submit Pupdate">
+    <br>
     <br>
 
     <input type="hidden" name="shift-id" value={{ shift_id }}>
@@ -152,12 +162,17 @@ Shift Date: {{ new_shift.date_time }}
 </div>
 {% endfor %}
 
-<h4>Add Shift Notes</h4><br>
-
+<div class="formHeadings">
+    <h1>Add Shift Notes</h1><br>
+</div>
 <form action="/submitnotes" id="generalNotes" method="POST">
     <input type="text" class="textbox" name="notes"><br>
     <input type="hidden" name="shift-id" value={{ shift_id }}><br>
-    <input type="submit" id="submitButton" value="Submit Shift Notes"><br>
+    <br>
+    <br>
+    <input type="submit" id="submitButton" value="SUBMIT SHIFT NOTES"><br>
+    <br>
+    <br>
 </form>
 <br>
 <br>

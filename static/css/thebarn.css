@@ -1,8 +1,28 @@
 
+.nav, .navbar, .navbar-default, .navbar-default, .container-fluid {
+  background-color: black;
+  color: white;
+  border-radius: 0px;
+  font-size: 18px;
+  height: 120px;
+  font-family: 'Raleway', sans-serif;
+}
+
+.navbar-default .navbar-brand {
+  color: white;
+  font-size: 50px;
+  font-family: 'Josefin Slab', serif;
+ 
+}
+
+.navbar-default .navbar-nav>li>a {
+  color: white;
+
+}
+
 .mainBoard{
   padding: 50px;
 }
-
 
 #dogPictures{
   padding: 50px;
@@ -10,20 +30,37 @@
 
 #intakeData{
   padding: 50px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
 
 }
 
 .recentAddNotes{
+  border: #efefef 3px solid;
   padding: 30px;
   border-radius: 15px;
   background-color: #eaeaea;
   font-size: 18px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  font-family: 'Raleway', sans-serif;
+  margin:50px;
+  font-weight: bold;
+  opacity: .80;
+}
 
+#shiftDuration, #otherCrew{
+  padding-top: 10px;
+    
 }
 
 
 .greeting{
-  font-size: 20px;
+  font-size: 36px;
+  font-family: 'Josefin Slab', serif;
+  font-weight: bold;
+  margin-left: 50px;
+ 
+
 }
 
 .dogPicture   {
@@ -36,26 +73,30 @@
 .container {
   margin: 0;
   width: 100%;
+  background-image: url("subtle_dots_@2X.png");
+  padding-bottom: 500px;
+
 
 }
 
 .textbox {
   height: 200px;
   width: 700px; 
-  border: 1px solid;
+  background-color: #eaeaea;
   border-radius: 15px;
+
 }
 
 .pupdatebox {
-  height: 50px;
-  width: 150px; 
-  border: 1px solid;
+  height: 150px;
+  width: 400px; 
+  background-color: #eaeaea;
   border-radius: 15px;
 }
 
 #submitButton {
     background-color: #a0d8f3; 
-    border: #a0d8f3 1px solid;
+    border: #a0d8f3 3px solid;
     color: black;
     padding: 15px 32px;
     text-align: center;
@@ -64,20 +105,24 @@
     font-size: 18px;
     border-radius: 8px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
 }
 
 #pupdateButton {
-    background-color: #a0d8f3; 
-    border: #a0d8f3 1px solid;
+    background-color: #A2FF96; 
+    border: #A2FF96 3px solid;
     color: black;
-    padding: 15px 32px;
+    padding: 6px 14px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 18px;
     border-radius: 8px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    font-family: 'Raleway', sans-serif;
+    font-weight: bold;
+
 }
 
 #submitButton:hover {
@@ -88,76 +133,29 @@
   background-color: white;
 }
 
+.formHeadings {
+  font-family: 'Josefin Slab', serif;
+  font-size: 18px;
+}
 
-
-/*#dogp1   {
-    float: left;
-  
+#comChart{
+  display: block;
+  margin: auto;
+  width: 40%;
 
 }
 
-#dogp2   {
-    float: left;
-  
-}
-
-#dogp4   {
-    float: left;
-    
-}
-
-#dogp5   {
-    float: left;
-    
-}
-
-#dogp7   {
-    float: left;
-   
-}
-
-#dogp8   {
-    float: left;
-   
-}
-
-#dogp10   {
-    float: left;
-   
-}
-
-#dogp11   {
-    float: left;
- 
-}
-
-
-#dogp13   {
-    float: left;
+.dogCommandsGraph {
+  max-height: 550px;
+  max-width: 650px;
+  align-content: center;
 
 }
-
-#dogp14   {
-    float: left;
-
-}
-*/
-
-.node {
-      fill: #ccc;
-      stroke-width: 2px;
-    }
 
 .link {
       stroke: #777;
       stroke-width: 3px;
     }
-text {
-      fill: #000;
-      font: 10px sans-serif;
-      pointer-events: none;
-    }
-
 
 
 .miniDogPicture   {
@@ -169,7 +167,20 @@ text {
     vertical-align: top;
 }
 
+.dogNames{
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
 
+}
+
+.pupdateForm, .dogForm, .subText{
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+}
+
+.icon{
+
+}
 
 .dogIntakeProfile {
   vertical-align: top;
@@ -184,21 +195,15 @@ text {
   
 }
 
-.dogCommandsGraph {
-  max-height: 450px;
-  max-width: 500px;
-  right: 0;
-
-}
-
 .graphCircle{
   fill: #a0d8f3;
 }
 
 .graphText{
   font-weight: bold;
-  font-family: sans-serif;
-  font-size: 14px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 16px;
+
 }
 
 
