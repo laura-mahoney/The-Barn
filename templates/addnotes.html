@@ -1,180 +1,236 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="formHeadings">
-    <h1>Add Pupdates</h1><br>
-</div>
+<div class="mainBoard row">
+    <div class="row col-md-12">
+        <div class="formHeadings">
+            <h1>Add Pupdates</h1><br><br>
+        </div>
 
-<script src="https://code.jquery.com/jquery.js" type="text/javascript"></script>
+        <script src="https://code.jquery.com/jquery.js" type="text/javascript"></script>
 
-<div class="subText">
-    {{ crew.fname }}, provide pupdates for the following shift: <br>{{ new_shift.date_time }}<br><br>
-</div>
+        <div class="subText">
+            {{ crew.fname }}, provide pupdates for the following shift: <br>{{ new_shift.date_time }}<br>
+        </div>
+        <br>
+        <br>
+        <br>
+        {% for dog in dogs %}
+            <div class="dogNames">
+                <p data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
+                <div class="icon">
+                    <img src= "static/images/bone.png" id="{{ dog.dog_id }}bone" style="display: none;">
+                </div>
+            </div>
 
-{% for dog in dogs %}
-    <div class="dogNames">
-        <p data-dog="{{ dog.dog_id }}">{{ dog.dog_name }}</p>
-    </div>
+            <div class="dogForm" id="{{ dog.dog_id }}" style="display: none;">
+        <!-- this page will provide a form for daily shift entries, the intake information will eventually include playmates -->
+        <br>
 
-    <div>
-        <img src= "static/images/{{ dog.dog_name }}.jpg" class="miniDogPicture" id="miniDogp{{ dog.dog_id }}">
-    </div>
-  
-    <div class="icon">
-        <img src= "static/images/bone.png" id="{{ dog.dog_id }}bone" style="display: none;">
-    </div>
+        <!-- the form will submit data to database about the dogs activities per shift -->
+        <form class="pupdateForm" action="/dog/notes" method="POST">
+            <div class="row">
+            <div>
+                <img src= "static/images/{{ dog.dog_name }}.jpg" class="miniDogPicture" id="miniDogp{{ dog.dog_id }}">
+            </div><br><br>
+            
+            <div class="col-xs-8">
+                <label>{{ dog.dog_name }}'s Skills:<br></label>
+                <br><label>
+                Activities<br><br></label>
+                <!-- type yes or no and give score -->
+                <div class="row">
+                    <label class="col-xs-4">
+                    Dog Mountain:
+                                <select name="dogmountain">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option>
+                                </select><br>
+                    
+                    </label>
+                    <label class="col-xs-4">
+                    Flirt Pole:
+                                <select name="flirtpole">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option>
+                                </select><br>
+                    
 
-    <div class="dogForm" id="{{ dog.dog_id }}" style="display: none;">
-<!-- this page will provide a form for daily shift entries, the intake information will eventually include playmates -->
-<br>
+                    </label>
+                    <label class="col-xs-4">
+                    Drills: 
+                            <select name="drills">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select><br>
+                    </label>
+                </div><br>
 
-<!-- the form will submit data to database about the dogs activities per shift -->
-<form class="pupdateForm" action="/dog/notes" method="POST">
-    {{ dog.dog_name }}'s Skills:<br>
-    <br>
-    Activities<br>
-    <!-- type yes or no and give score -->
-    Dog Mountain:
-                <select name="dogmountain">
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                </select><br>
-    Flirt Pole: 
-                <select name="flirtpole">
-                    <option value="no">No</option>
-                    <option value="yes">Yes</option>
-                </select><br>
-    Drills: 
-            <select name="drills">
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-            </select><br>
 
-    Walk on Leash: 
-            <select name="leash">
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-            </select><br>
+                <div class="row">
+                    <label class="col-xs-4">
+                    Walk on Leash: 
+                            <select name="leash">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select><br>
+                    </label>
 
-    Push Ups: 
-            <select name="dogmountain">
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-            </select><br>
+                    <label class="col-xs-4">
+                    Push Ups: 
+                            <select name="dogmountain">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select><br>
+                    </label>
 
-    Fetch: 
-            <select name="fetch">
-                <option value="no">No</option>
-                <option value="yes">Yes</option>
-            </select><br>
+                    <label class="col-xs-4">
+                    Fetch: 
+                            <select name="fetch">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select><br>
+                            <br>
+                    </label>
+                </div>
+
+                <label>
+                Commands<br>How well does {{ dog.dog_name }} know{% if dog.gender=='Female' %} her {% else %} his {% endif %}manners?<br><br></label>
+                <!-- give score between 1 and 5 -->
+                <div>
+                    <div class="row">
+                    <label class="col-xs-3">
+                        <select name="wait">
+                                    <option selected disabled>Wait</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                        </select><br>
+                    </label>
+
+                    <label class="col-xs-3">
+                        <select name="sit">
+                                    <option selected disabled>Sit</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                        </select><br>
+                    </label>
+                
+                    <label class="col-xs-3">
+                        <select name="down">
+                                    <option selected disabled>Down</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                        </select><br>
+                    </label>
+
+                    <label class="col-xs-3">
+                        <select name="drop">
+                                    <option selected disabled>Drop</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                        </select><br>
+                    </label>
+                    </div><br>
+
+                    <div class="row">
+                        <label class="col-xs-3">
+                            <select name="leaveit">
+                                        <option selected disabled>Leave It</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                            </select><br>
+                        </label>
+
+                        <label class="col-xs-3">
+                            <select name="shake">
+                                        <option selected disabled>Shake</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                            </select><br>
+                        </label>
+
+                        <label class="col-xs-3">
+                            <select name="stay">
+                                        <option selected disabled>Stay</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                            </select><br>
+                            <br>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="playmates">    
+                    <label>Playmates</label>
+                    <select name="dog1">
+                            <option selected disabled>Playmate 1</option>
+                        {% for dog in dogs %}
+                            <option value="{{ dog.dog_id }}">{{ dog.dog_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="dog2">
+                            <option selected disabled>Playmate 2</option>
+                        {% for dog in dogs %}
+                            <option value="{{ dog.dog_id }}">{{ dog.dog_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            
+            </div>
+
+
+
+            <div class="col-xs-4">
+                <input type="text" class="pupdatebox" name="pupdatenotes">
+                <br>
+                <br>
+                <input type="submit" id="pupdateButton" value="Submit Pupdate">
+                <br>
+
+                <input type="hidden" name="shift-id" value={{ shift_id }}>
+                <input type="hidden" name="dog-id" value={{ dog.dog_id }}>
+            </div>
+
+        </div>
+        </form>
+        </div>
+        <br>
+        {% endfor %}
+
+        <div class="formHeadings"><br>
+            <h1>Add Shift Notes</h1><br><br>
+        </div>
+        <form action="/submitnotes" id="generalNotes" method="POST">
+            <input type="text" class="textbox" name="notes"><br>
+            <input type="hidden" name="shift-id" value={{ shift_id }}><br>
             <br>
-    Commands<br>How well does {{ dog.dog_name }} know{% if dog.gender=='Female' %} her {% else %} his {% endif %}manners:<br>
-    <!-- give score between 1 and 5 -->
-    <select name="wait">
-                <option selected disabled>Wait</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-    </select><br>
-
-    <select name="sit">
-                <option selected disabled>Sit</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-    </select><br>
-
-    <select name="down">
-                <option selected disabled>Down</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-    </select><br>
-
-    <select name="drop">
-                <option selected disabled>Drop</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-    </select><br>
-
-    <select name="leaveit">
-                <option selected disabled>Leave It</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-    </select><br>
-
-    <select name="shake">
-                <option selected disabled>Shake</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-    </select><br>
-
-    <select name="stay">
-                <option selected disabled>Stay</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-    </select><br>
-    <br>
-    
-    <div class="playmates">    
-        Playmates
-        <select name="dog1">
-                <option selected disabled>Playmate 1</option>
-            {% for dog in dogs %}
-                <option value="{{ dog.dog_id }}">{{ dog.dog_name }}</option>
-            {% endfor %}
-        </select>
-        <select name="dog2">
-                <option selected disabled>Playmate 2</option>
-            {% for dog in dogs %}
-                <option value="{{ dog.dog_id }}">{{ dog.dog_name }}</option>
-            {% endfor %}
-        </select>
+            <br>
+            <input type="submit" id="submitButton" value="SUBMIT SHIFT NOTES"><br>
+            <br>
+            <br>
+        </form>
+        <br>
+        <br>
     </div>
-    <br>
-    <input type="text" class="pupdatebox" name="pupdatenotes">
-    <br>
-    <br>
-    <input type="submit" id="pupdateButton" value="Submit Pupdate">
-    <br>
-    <br>
-
-    <input type="hidden" name="shift-id" value={{ shift_id }}>
-    <input type="hidden" name="dog-id" value={{ dog.dog_id }}>
-</form>
 </div>
-{% endfor %}
-
-<div class="formHeadings">
-    <h1>Add Shift Notes</h1><br>
-</div>
-<form action="/submitnotes" id="generalNotes" method="POST">
-    <input type="text" class="textbox" name="notes"><br>
-    <input type="hidden" name="shift-id" value={{ shift_id }}><br>
-    <br>
-    <br>
-    <input type="submit" id="submitButton" value="SUBMIT SHIFT NOTES"><br>
-    <br>
-    <br>
-</form>
-<br>
-<br>
-
 {% endblock %}

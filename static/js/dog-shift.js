@@ -155,7 +155,7 @@ $(".dogNames").on("click", showDogForm);
 // ///////////this function adds form data/pupdates to the database
 function pupdateSuccess(){
     $('.dogForm').hide();
-    $('#' + currentDogId + 'bone').show();
+    $('#' + currentDogId + 'bone.png').show();
     // $(this).prop("disabled", true); test this 
     console.log('Successfully Pupdated!');
 }

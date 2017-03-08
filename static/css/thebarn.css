@@ -3,21 +3,40 @@
   background-color: black;
   color: white;
   border-radius: 0px;
-  font-size: 18px;
+  font-size: 24px;
   height: 120px;
   font-family: 'Raleway', sans-serif;
+  margin: 0;
+  border-color: black;
+  
 }
 
 .navbar-default .navbar-brand {
   color: white;
-  font-size: 50px;
+  font-size: 60px;
   font-family: 'Josefin Slab', serif;
- 
+  margin: 30px;
+
 }
 
 .navbar-default .navbar-nav>li>a {
+  margin-top: 0;
   color: white;
 
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+  color: #bde8ef;
+
+}
+
+.navbar-right{
+  margin-top: -10px;
+  margin-right: 0;
+}
+
+#navbar-center{
+  text-align: center;
 }
 
 .mainBoard{
@@ -26,12 +45,13 @@
 
 #dogPictures{
   padding: 50px;
+
 }
 
 #intakeData{
   padding: 50px;
   font-family: 'Raleway', sans-serif;
-  font-size: 16px;
+  font-size: 24px;
 
 }
 
@@ -40,7 +60,7 @@
   padding: 30px;
   border-radius: 15px;
   background-color: #eaeaea;
-  font-size: 18px;
+  font-size: 24px;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   font-family: 'Raleway', sans-serif;
   margin:50px;
@@ -63,11 +83,23 @@
 
 }
 
+
 .dogPicture   {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     border-radius: 50%;
     height: 200px;
     width: 200px;
     padding: 10px;
+    margin: 10px;
+/*    padding-left: 0;
+    padding-right: 0;*/
+}
+
+
+
+img.dogPicture:hover  {
+  opacity: .70;
+
 }
 
 .container {
@@ -79,19 +111,26 @@
 
 }
 
+
 .textbox {
-  height: 200px;
-  width: 700px; 
+  height: 300px;
+  width: 820px; 
   background-color: #eaeaea;
   border-radius: 15px;
+  line-height: 2em; 
+  padding: 25px 5px 400px 0;
+  font-family: 'Raleway', sans-serif;
+  font-size: 24px;
 
 }
 
 .pupdatebox {
-  height: 150px;
-  width: 400px; 
-  background-color: #eaeaea;
+  width: 100%; 
   border-radius: 15px;
+  line-height: 2em; 
+  padding: 25px 5px 400px 0;
+  font-family: 'Raleway', sans-serif;
+  font-size: 24px;
 }
 
 #submitButton {
@@ -102,7 +141,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 18px;
+    font-size: 24px;
     border-radius: 8px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     font-family: 'Raleway', sans-serif;
@@ -117,7 +156,7 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 18px;
+    font-size: 24px;
     border-radius: 8px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     font-family: 'Raleway', sans-serif;
@@ -126,11 +165,11 @@
 }
 
 #submitButton:hover {
-  background-color: white;
+  background-color: #bde8ef;
 }
 
 #pupdateButton:hover {
-  background-color: white;
+  background-color: #d5ffce;
 }
 
 .formHeadings {
@@ -160,22 +199,42 @@
 
 .miniDogPicture   {
     display: block;
-    border-radius: 80px;
-    height: 70px;
-    width: 70px;
-    padding: 10px;
+    border-radius: 50%;
+    border: 12px solid;
+    border-color: #d5ffce;
+    height: 250px;
+    width: 250px;
     vertical-align: top;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
 }
 
 .dogNames{
   font-family: 'Raleway', sans-serif;
-  font-size: 16px;
+  font-size: 24px;
 
 }
 
-.pupdateForm, .dogForm, .subText{
+.dogNames:hover{
+  font-weight: bold;
+  font-size: 30px;
+
+}
+
+.dogForm, .subText{
   font-family: 'Raleway', sans-serif;
-  font-size: 16px;
+  font-size: 24px;
+  padding: 25px;
+  background-color: #efefef; 
+  border-radius: 15px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+
+}
+
+.pupdateForm {
+  padding:25px;
+  background-color: #efefef; 
+
 }
 
 .icon{

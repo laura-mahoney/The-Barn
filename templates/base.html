@@ -14,7 +14,7 @@
                 <a class="navbar-brand" href="#">Pupdates</a>
             </div>
             <div id="navbar">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav navbar-right">
                     {% if "crew_id" in session %}
                     <li><a href="/thebarn">The Barn</a></li>
                     <li><a href="/calendar">Shift Calendar</a></li>
@@ -27,10 +27,11 @@
                     <li><a href="/register">Register</a></li>
                     {% endif %}
                 </ul>
-    {% for flash in get_flashed_messages() %}
-      {{ flash }}
-    {% endfor %}
-               
+                <ul id="navbar-center">
+                    {% for flash in get_flashed_messages() %}
+                      {{ flash }}
+                    {% endfor %}
+               </ul>
             </div>
         </div>
     </nav>
