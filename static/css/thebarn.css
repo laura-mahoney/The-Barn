@@ -55,7 +55,7 @@
 
 }
 
-.recentAddNotes{
+.recentAddNotes {
   border: #efefef 3px solid;
   padding: 30px;
   border-radius: 15px;
@@ -66,6 +66,40 @@
   margin:50px;
   font-weight: bold;
   opacity: .80;
+}
+
+.addDogForm {
+  border: #efefef 3px solid;
+  padding: 30px;
+  border-radius: 15px;
+  background-color: #eaeaea;
+  font-size: 24px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  font-family: 'Raleway', sans-serif;
+  margin:50px;
+  font-weight: bold;
+  opacity: .80;
+  margin-right: 900px;
+ 
+
+}
+
+.signin, .register {
+  border: #efefef 3px solid;
+  padding: 30px;
+  border-radius: 15px;
+  background-color: #eaeaea;
+  font-size: 24px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  font-family: 'Raleway', sans-serif;
+  margin-top: 200px;
+  margin-left:600px;
+  margin-right: 600px;
+  margin-left: 600px;
+  font-weight: bold;
+  opacity: .80;
+  text-align: center;
+
 }
 
 #shiftDuration, #otherCrew{

@@ -139,7 +139,6 @@ $(".dogPicture").on('click', checkPlaymates);
 
 
 
-
 // this function shows and hides the dog form when clicked on the notes page
 var clicks = 0;
 

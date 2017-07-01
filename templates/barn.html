@@ -142,7 +142,6 @@
     </div>
 </div>
 
-
 <div class="addDogForm" style="display:none">
     <form action="/adddog" method="POST">
         <div class = "col col-mid-4" id="addDog">
@@ -156,7 +155,7 @@
                 <option>Gender</option>
                 <option value="Female">Female</option>
                 <option value="Male">Male</option>
-            </select><br>
+            </select>
             <select name="altered">
                 <option>Altered</option>
                 <option value=true>Yes</option>
@@ -164,7 +163,7 @@
             </select><br>
             Intake Date:<br>
             <input type="date" name="intake_date"><br><br>
-            <input type="file" accept="image/*" capture="camera" name="new_dog_pic"><br><br>
+            <input id="uploaded_pic" type="file" accept="image/*" capture="camera"><br><br>
             <input type="submit" id="pupdateButton" name="adddog" value="ADD DOG"><br>
         </div>
     </form>

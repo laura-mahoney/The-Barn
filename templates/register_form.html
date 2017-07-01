@@ -1,29 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="register">
+  <h1>Register for Pupdates</h1>
 
-<h1>Register for Pupdates</h1>
-
-<form action="/register" method="POST">
-    <br>
-    First Name
-    <br>
-    <input type="text" name="fname"><br>
-    <br>
-    Last Name
-    <br> 
-    <input type="text" name="lname"><br>
-    <br>
-    Email
-    <br>
-    <input type="text" name="email"><br>
-    <br>
-    Choose a password
-    <br>
-    <input type="password" name="password"><br>
-    <br>
-    <input type="submit" value="Register">
-</form>
-
+  <form action="/register" method="POST">
+      <br>
+      First Name
+      <br>
+      <input type="text" name="fname"><br>
+      <br>
+      Last Name
+      <br> 
+      <input type="text" name="lname"><br>
+      <br>
+      Email
+      <br>
+      <input type="text" name="email"><br>
+      <br>
+      Choose a password
+      <br>
+      <input type="password" name="password"><br>
+      <br>
+      <input type="submit" value="Register">
+  </form>
+</div>>
 
 {% endblock %}
 
