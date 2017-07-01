@@ -1,3 +1,5 @@
+<!-- this is the main page that displays all dogs, their data, i.e. dashboard
+ -->
 {% extends 'base.html' %}
 {% block content %}
 <div class="greeting">
@@ -128,6 +130,7 @@
        <img src= "static/images/{{ dog.dog_name }}.jpg" id="dogp{{ dog.dog_id }}" class="dogPicture col-md-2" data-dog="{{ dog.dog_id }}">
 
     {% endfor %}
+        <img src="static/images/plus_sign.jpg" class="dogPicture col-md-2" id="plus">
 
     </div>
 
@@ -138,4 +141,33 @@
         </div>
     </div>
 </div>
+
+
+<div class="addDogForm" style="display:none">
+    <form action="/adddog" method="POST">
+        <div class = "col col-mid-4" id="addDog">
+            Name:<br>
+            <input type="text" name="dog_name"><br>
+            Breed:<br>
+            <input type="text" name="breed"><br>
+            Age:<br>
+            <input type="number" name="age"><br>
+            <select name="gender">
+                <option>Gender</option>
+                <option value="Female">Female</option>
+                <option value="Male">Male</option>
+            </select><br>
+            <select name="altered">
+                <option>Altered</option>
+                <option value=true>Yes</option>
+                <option value=false>No</option>
+            </select><br>
+            Intake Date:<br>
+            <input type="date" name="intake_date"><br><br>
+            <input type="file" accept="image/*" capture="camera" name="new_dog_pic"><br><br>
+            <input type="submit" id="pupdateButton" name="adddog" value="ADD DOG"><br>
+        </div>
+    </form>
+</div>
+
 {% endblock %}

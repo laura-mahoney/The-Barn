@@ -45,9 +45,10 @@ def register_process():
 
     email = request.form["email"]
     password = request.form["password"]
+    fname = request.form["fname"]
+    lname = request.form["lname"]
 
-
-    new_crew = Barncrew(email=email, password=password)
+    new_crew = Barncrew(email=email, password=password, fname=fname, lname=lname)
 
     db.session.add(new_crew)
     db.session.commit()
@@ -234,7 +235,10 @@ def post_notes():
 @app.route('/getintakedata', methods=['GET'])
 def get_intake():
 
+    dogs = db.session.query(Dog).all()
+    total_dogs = len([i for i in dogs])
     
+
     current_id = request.args.get('currentDogId')
 
     recent_shift = Shift.query.order_by(Shift.date_time.desc()).first().shift_id#query for most recent notes by date and time
@@ -249,7 +253,7 @@ def get_intake():
         if recent.dog_id == int(current_id):
             recent_dog_notes.append(recent.notes)
 
-    data = {'recentnotes': recent_dog_notes, 'dogid': int(current_id), 'name': intake_data.dog_name, 'kennel': intake_data.kennel_id, 'age': intake_data.age, 'breed': intake_data.breed, 'intakedate': intake_data.intake_date, 'gender': intake_data.gender, 'altered': intake_data.altered}
+    data = {'total_dogs': total_dogs, 'recentnotes': recent_dog_notes, 'dogid': int(current_id), 'name': intake_data.dog_name, 'kennel': intake_data.kennel_id, 'age': intake_data.age, 'breed': intake_data.breed, 'intakedate': intake_data.intake_date, 'gender': intake_data.gender, 'altered': intake_data.altered}
 
 
     return jsonify(data)
@@ -368,9 +372,34 @@ def get_reports():
     return jsonify({'dog_nodes': dog_nodes, 'dog_links': dog_links, 'command_data': command_data})
 
 
-if __name__ == '__main__':
+# this route will get dog info, and add a new dog to the database
+@app.route('/adddog', methods=['GET', 'POST'])
+def add_dog():
 
-    
+    dog_name = request.form.get('dog_name')
+    breed = request.form.get('breed')
+    age = request.form.get('age')
+    gender = request.form.get('gender')
+    altered = request.form.get('altered')
+    intake_date = request.form.get('intake_date')
+    dog_pic = request.form.get('new_dog_pic')
+    print type(dog_pic)
+    new_kennel = Kennel(dog_door=True, size='Small', indoor=True)
+
+    db.session.add(new_kennel)
+    db.session.commit()
+
+    new_kennel = Kennel.query.order_by(Kennel.kennel_id.desc()).first()
+
+    new_dog = Dog(dog_name=dog_name, breed=breed, age=int(age), gender=gender, kennel_id = new_kennel.kennel_id, altered=altered, intake_date=intake_date)
+
+    db.session.add(new_dog)
+    db.session.commit()
+
+    flash("You've added " + dog_name + " to the barn!")
+    return redirect("/thebarn")
+
+if __name__ == '__main__':
     
     app.jinja_env.auto_reload = app.debug
 

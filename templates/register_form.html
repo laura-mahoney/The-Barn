@@ -1,14 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Register as new Barncrew</h1>
+<h1>Register for Pupdates</h1>
 
 <form action="/register" method="POST">
-    Enter your email:
+    <br>
+    First Name
+    <br>
+    <input type="text" name="fname"><br>
+    <br>
+    Last Name
+    <br> 
+    <input type="text" name="lname"><br>
+    <br>
+    Email
     <br>
     <input type="text" name="email"><br>
     <br>
-    Enter your password:
+    Choose a password
     <br>
     <input type="password" name="password"><br>
     <br>

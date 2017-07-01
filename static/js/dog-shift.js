@@ -13,7 +13,7 @@ function dataShown(results){
 
     proclicks++;
 
-    var allDogs = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+    var allDogs = results.total_dogs
     var thisDog = results.dogid;
 
 
@@ -31,7 +31,7 @@ function dataShown(results){
         $("#intakeData").removeClass("hidden");
 
 
-        for(var i = 0; i<=allDogs.length; i++){
+        for(var i = 0; i<=allDogs; i++){
             if(i != thisDog){
                 $("#dogp" + i).fadeTo("slow", 0.33)
             }
@@ -54,12 +54,21 @@ function dataShown(results){
 
 }
 
+
+
+
 function showIntakeData(evt){
     evt.preventDefault();
-    var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
 
-    $.get("/getintakedata", currentDogId, dataShown);
+    var id = $(this).attr('id');
 
+    if(id == "plus"){
+       $('.addDogForm').toggle();
+    } else {
+        var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
+
+        $.get("/getintakedata", currentDogId, dataShown);
+    };
 }
 
 $(".dogPicture").on("click", showIntakeData);
@@ -102,7 +111,6 @@ function makeCommandsGraph(data){
 
 
 
-
 // success function shows dog report
 function playmatesReceived(data){
     console.log("Id received from server");
@@ -113,15 +121,20 @@ function playmatesReceived(data){
 function checkPlaymates(evt){
     evt.preventDefault();
 
-    var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
+    var id = $(this).attr('id');
 
-    $.post("/reports.json", currentDogId, playmatesReceived);
+    if(id == "plus"){
+        return 0
+    } else {
+
+        var currentDogId = {'currentDogId': evt.target.attributes['data-dog'].value};
+        $.post("/reports.json", currentDogId, playmatesReceived);
+    
+    }
 
 };
 
 $(".dogPicture").on('click', checkPlaymates);
-
-
 
 
 
@@ -147,7 +160,6 @@ function showDogForm(evt){
 };
 
 $(".dogNames").on("click", showDogForm);
-
 
 
 
@@ -182,6 +194,7 @@ function addPupdates(evt){
 };
 
 $(".pupdateForm").submit(addPupdates);
+
 
 });
 

@@ -265,6 +265,20 @@ img.dogPicture:hover  {
 
 }
 
+.addDogForm{
+  vertical-align: bottom;
+  left:0;
+  padding: 50px;
+
+
+}
+
+#addDog {
+  padding: 50px;
+
+}
+
+  
 
 
 

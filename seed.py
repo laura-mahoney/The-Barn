@@ -1,7 +1,7 @@
 """utility file to seed barncrew and dogs"""
 
 from sqlalchemy import func
-from model import Barncrew, Dog, Kennel, Positions
+from model import Barncrew, Dog, Kennel, Positions, Shift
 import datetime
 
 from model import connect_to_db, db
@@ -86,17 +86,30 @@ def load_kennel():
         db.session.add(kennel)
 
     db.session.commit()
-    
 
+def load_shift():
+
+    for row in open("seed_data/shift.txt"):
+        row = row.strip()
+
+        shift_id, date_time, duration, notes = row.split("|") 
+    
+        shift = Shift(shift_id=shift_id, date_time=date_time, duration=duration, notes=notes)
+
+        db.session.add(shift)
+
+    db.session.commit()
 
 if __name__ == "__main__":
     connect_to_db(app)
 
     
     db.create_all()
-
+    
+    load_shift()
     load_kennel()
     load_positions()
     load_crew()
     # set_val_crew_id()
     load_dogs()
+    

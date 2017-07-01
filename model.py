@@ -20,7 +20,7 @@ class Barncrew(db.Model):
     fname = db.Column(db.String(20), nullable=False)
     lname = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(30), unique=True, nullable=False)
-    phone = db.Column(db.String(20), nullable=False)
+    phone = db.Column(db.String(20), nullable=True)
     password = db.Column(db.String(30), nullable=False)
     pos_code = db.Column(db.String(10), db.ForeignKey("positions.pos_code")) 
 
@@ -65,7 +65,7 @@ class Kennel(db.Model):
     def __repr__(self):
         return "<Kennel ID: kennel_id=%s>" % (self.kennel_id)
 
-    kennel_id = db.Column(db.Integer, primary_key=True)
+    kennel_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     dog_door = db.Column(db.Boolean, default=True, nullable=False) #boolean DEFAULT true NOT NULL
     size = db.Column(db.String(10), nullable=False)
     indoor = db.Column(db.Boolean, default=True, nullable=False) #boolean DEFAULT true NOT NULL
