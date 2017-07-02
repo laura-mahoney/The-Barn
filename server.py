@@ -15,7 +15,7 @@ from werkzeug.utils import secure_filename #add
 import bcrypt
 
 # UPLOAD_FOLDER = 'static/images'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['jpg'])
 
 app = Flask(__name__)
 
@@ -59,13 +59,19 @@ def register_process():
     fname = request.form["fname"]
     lname = request.form["lname"]
 
-    new_crew = Barncrew(email=email, password=hashed_password, fname=fname, lname=lname)
+    user_exists = Barncrew.query.filter_by(email=email).first()
+    
+    if user_exists is not None: 
+        flash("A user with that email already exists!")
+        return redirect('/register')
+    else:
+        new_crew = Barncrew(email=email, password=hashed_password, fname=fname, lname=lname)
 
-    db.session.add(new_crew)
-    db.session.commit()
+        db.session.add(new_crew)
+        db.session.commit()
 
-    flash("You've been added to The Barn Crew!")
-    return redirect("/sign_in")
+        flash("You've been added to The Barn Crew!")
+        return redirect("/sign_in")
 
 
 
@@ -103,11 +109,11 @@ def sign_in_process():
 
         recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
 
-        flash("Logged in")
+        flash("Signed In")
         return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, shift_id=shift_id, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts)
 
     else:
-        flash("Incorrect password")
+        flash("Incorrect Password")
         return redirect("/sign_in")
 
 
@@ -131,7 +137,7 @@ def logout():
     """Log out."""
 
     del session["crew_id"]
-    flash("Logged Out.")
+    flash("Logged Out")
     return redirect("/")
 
 
@@ -402,7 +408,12 @@ def add_dog():
     altered = request.form.get('altered')
     intake_date = request.form.get('intake_date')
     
+    dog_exists = Dog.query.filter_by(dog_name = dog_name).first()
 
+    #if the dog name already exists
+    if dog_exists is not None:
+        flash('Dog Name is Taken, Please Choose Another')
+        return redirect("/thebarn")
     #checking if post request has image file part named 'new_dog_pic'
     if 'new_dog_pic' not in request.files:
             flash('No file part')
