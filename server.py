@@ -62,7 +62,7 @@ def register_process():
     user_exists = Barncrew.query.filter_by(email=email).first()
     
     if user_exists is not None: 
-        flash("A user with that email already exists!")
+        flash("A User With That Email Already Exists!", 'error')
         return redirect('/register')
     else:
         new_crew = Barncrew(email=email, password=hashed_password, fname=fname, lname=lname)
@@ -70,7 +70,7 @@ def register_process():
         db.session.add(new_crew)
         db.session.commit()
 
-        flash("You've been added to The Barn Crew!")
+        flash("You're Signed Up for Pupdates!", 'message')
         return redirect("/sign_in")
 
 
@@ -94,7 +94,7 @@ def sign_in_process():
     dogs = db.session.query(Dog).all()
 
     if not crew:
-        flash("Barncrew member does not exist.")
+        flash("Barncrew Member Does Not Exist", 'error')
         return redirect("/sign_in")
 
     if bcrypt.checkpw(password.encode('utf8'), crew.password.encode('utf8')):
@@ -113,7 +113,7 @@ def sign_in_process():
         return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, shift_id=shift_id, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts)
 
     else:
-        flash("Incorrect Password")
+        flash("Incorrect Password", 'error')
         return redirect("/sign_in")
 
 
@@ -137,7 +137,7 @@ def logout():
     """Log out."""
 
     del session["crew_id"]
-    flash("Logged Out")
+    flash("Logged Out", 'message')
     return redirect("/")
 
 
@@ -247,7 +247,7 @@ def post_notes():
     
     db.session.commit()
 
-    flash("You've added general barn notes!")
+    flash("You've Added General Barn Notes!", 'message')
     return redirect("/thebarn")
 
 
@@ -408,29 +408,41 @@ def add_dog():
     altered = request.form.get('altered')
     intake_date = request.form.get('intake_date')
     
+    verify_values = [dog_name, breed, age, gender, altered, intake_date]
+
+    #if form is left empty, flash error message
+    for vals in verify_values:
+        if vals == "" or None:
+            flash('Please Complete Missing Information', 'error')
+            return redirect('/thebarn')
+
+    #checking if the dog already exists in the barn
     dog_exists = Dog.query.filter_by(dog_name = dog_name).first()
 
     #if the dog name already exists
     if dog_exists is not None:
-        flash('Dog Name is Taken, Please Choose Another')
+        flash('Dog Name is Taken, Please Choose Another', 'error')
         return redirect("/thebarn")
     #checking if post request has image file part named 'new_dog_pic'
     if 'new_dog_pic' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
+            flash('Please Upload a Photo', 'error')
+            return redirect('/thebarn')
+
     file = request.files['new_dog_pic']
     print type(file)
+
+    if file.filename == '':
+        flash('Please Upload a Photo', 'error')
+        return redirect('/thebarn')
+
     #breaks the file name up to be renamed with dog's name and img type added at end
     file_arrary = file.filename.split(".")
-
     file.filename = dog_name + "." + file_arrary[-1]
 
     print file.filename 
     # if user does not select file, browser also
     # submit a empty part without filename
-    if file.filename == '':
-        flash('No selected file')
-        return redirect(request.url)
+
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))

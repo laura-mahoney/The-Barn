@@ -28,9 +28,14 @@
                     {% endif %}
                 </ul>
                 <ul id="navbar-center">
-                    {% for flash in get_flashed_messages() %}
-                      {{ flash }}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        <div class="{{ category }}">{{ message }}</div>
                     {% endfor %}
+                {% endwith %}
+         <!--            {% for flash in get_flashed_messages() %}
+                      {{ flash }}
+                    {% endfor %} -->
                </ul>
             </div>
         </div>

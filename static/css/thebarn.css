@@ -312,6 +312,13 @@ img.dogPicture:hover  {
 
 }
 
+.error {
+  color: red;
+}
+
+.message {
+  color: #a0d8f3;
+}
   
 
 
