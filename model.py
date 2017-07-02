@@ -21,7 +21,7 @@ class Barncrew(db.Model):
     lname = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(30), unique=True, nullable=False)
     phone = db.Column(db.String(20), nullable=True)
-    password = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String(200), nullable=False)
     pos_code = db.Column(db.String(10), db.ForeignKey("positions.pos_code")) 
 
 

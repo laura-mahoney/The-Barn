@@ -12,6 +12,7 @@ from datetime import datetime, time, date
 from sqlalchemy import desc
 from json import loads 
 from werkzeug.utils import secure_filename #add
+import bcrypt
 
 # UPLOAD_FOLDER = 'static/images'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
@@ -21,7 +22,7 @@ app = Flask(__name__)
 app.secret_key = "hghghghg"
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-UPLOAD_FOLDER = os.path.join(APP_ROOT, r'static/images')
+UPLOAD_FOLDER = os.path.join(APP_ROOT, 'static/images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER #add
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
@@ -53,10 +54,12 @@ def register_process():
 
     email = request.form["email"]
     password = request.form["password"]
+    hashed_password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt(12)) 
+
     fname = request.form["fname"]
     lname = request.form["lname"]
 
-    new_crew = Barncrew(email=email, password=password, fname=fname, lname=lname)
+    new_crew = Barncrew(email=email, password=hashed_password, fname=fname, lname=lname)
 
     db.session.add(new_crew)
     db.session.commit()
@@ -80,7 +83,7 @@ def sign_in_process():
 
     email = request.form["email"]
     password = request.form["password"]
-    
+
     crew = Barncrew.query.filter_by(email=email).first()
     dogs = db.session.query(Dog).all()
 
@@ -88,22 +91,24 @@ def sign_in_process():
         flash("Barncrew member does not exist.")
         return redirect("/sign_in")
 
-    if crew.password != password:
+    if bcrypt.checkpw(password.encode('utf8'), crew.password.encode('utf8')):
+
+        session["crew_id"] = crew.crew_id
+        
+        shift_id = Shift.query.all()
+        all_crew = Barncrew.query.all()
+
+        recent_shift = Shift.query.order_by(Shift.date_time.desc()).first().shift_id#query for most recent notes by date and time
+        recent_notes = Shift.query.get(recent_shift)
+
+        recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
+
+        flash("Logged in")
+        return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, shift_id=shift_id, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts)
+
+    else:
         flash("Incorrect password")
         return redirect("/sign_in")
-
-    session["crew_id"] = crew.crew_id
-    
-    shift_id = Shift.query.all()
-    all_crew = Barncrew.query.all()
-
-    recent_shift = Shift.query.order_by(Shift.date_time.desc()).first().shift_id#query for most recent notes by date and time
-    recent_notes = Shift.query.get(recent_shift)
-
-    recent_dogshifts = Dogshift.query.filter(Dogshift.shift_id==recent_shift).all() #query for all of the pupdates of this shift id
-
-    flash("Logged in")
-    return render_template("barn.html", crew=crew, dogs=dogs, all_crew=all_crew, shift_id=shift_id, recent_notes=recent_notes, recent_dogshifts=recent_dogshifts)
 
 
 @app.route('/thebarn')
@@ -396,13 +401,20 @@ def add_dog():
     gender = request.form.get('gender')
     altered = request.form.get('altered')
     intake_date = request.form.get('intake_date')
-    dog_pic = request.form.get('new_dog_pic')
+    
 
-    #checking if post request has file part
+    #checking if post request has image file part named 'new_dog_pic'
     if 'new_dog_pic' not in request.files:
             flash('No file part')
             return redirect(request.url)
     file = request.files['new_dog_pic']
+    print type(file)
+    #breaks the file name up to be renamed with dog's name and img type added at end
+    file_arrary = file.filename.split(".")
+
+    file.filename = dog_name + "." + file_arrary[-1]
+
+    print file.filename 
     # if user does not select file, browser also
     # submit a empty part without filename
     if file.filename == '':
@@ -410,8 +422,10 @@ def add_dog():
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER']), filename)
-     
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    
+
+    new_dog_pic = file.filename
 
     #creates a new kennel for the new dog
     new_kennel = Kennel(dog_door=True, size='Small', indoor=True)
