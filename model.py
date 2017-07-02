@@ -53,6 +53,7 @@ class Dog(db.Model):
     altered = db.Column(db.Boolean, nullable=False)
     age = db.Column(db.Float, nullable=False)
     intake_date = db.Column(db.DateTime, nullable=False)
+    dog_pic = db.Column(db.String(200), nullable=False)
 
 
     kennel = db.relationship('Kennel', backref='dogs')

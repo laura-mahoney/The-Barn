@@ -1,6 +1,6 @@
 
 import os
-from flask import Flask, request, jsonify, render_template, redirect, flash, session, abort
+from flask import Flask, request, jsonify, render_template, redirect, flash, session, abort, url_for
 from flask_assets import Environment
 from requests_oauthlib import OAuth2Session
 from requests_oauthlib.compliance_fixes import facebook_compliance_fix
@@ -11,11 +11,15 @@ import json
 from datetime import datetime, time, date
 from sqlalchemy import desc
 from json import loads 
+from werkzeug.utils import secure_filename #add
+
+UPLOAD_FOLDER = 'static/images/'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 
 app.secret_key = "hghghghg"
-
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER #add
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
@@ -372,6 +376,12 @@ def get_reports():
     return jsonify({'dog_nodes': dog_nodes, 'dog_links': dog_links, 'command_data': command_data})
 
 
+#this function will help the route upload the image to the folder
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 # this route will get dog info, and add a new dog to the database
 @app.route('/adddog', methods=['GET', 'POST'])
 def add_dog():
@@ -383,7 +393,23 @@ def add_dog():
     altered = request.form.get('altered')
     intake_date = request.form.get('intake_date')
     dog_pic = request.form.get('new_dog_pic')
-    print type(dog_pic)
+
+    #checking if post request has file part
+    if 'new_dog_pic' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+    file = request.files['new_dog_pic']
+    # if user does not select file, browser also
+    # submit a empty part without filename
+    if file.filename == '':
+        flash('No selected file')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER']))
+     
+
+    #creates a new kennel for the new dog
     new_kennel = Kennel(dog_door=True, size='Small', indoor=True)
 
     db.session.add(new_kennel)
@@ -391,7 +417,7 @@ def add_dog():
 
     new_kennel = Kennel.query.order_by(Kennel.kennel_id.desc()).first()
 
-    new_dog = Dog(dog_name=dog_name, breed=breed, age=int(age), gender=gender, kennel_id = new_kennel.kennel_id, altered=altered, intake_date=intake_date)
+    new_dog = Dog(dog_name=dog_name, breed=breed, age=int(age), gender=gender, kennel_id = new_kennel.kennel_id, altered=altered, intake_date=intake_date, dog_pic=new_dog_pic)
 
     db.session.add(new_dog)
     db.session.commit()

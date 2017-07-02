@@ -30,7 +30,7 @@ def load_dogs():
 
     for row in open("seed_data/dogs.txt"):
         row = row.strip()
-        dog_name, kennel_id, breed, gender, altered, age, intake_date = row.split("|")
+        dog_name, kennel_id, breed, gender, altered, age, intake_date, dog_pic = row.split("|")
 
 
         if intake_date:
@@ -38,7 +38,7 @@ def load_dogs():
         else:
             intake_date = None
 
-        dog = Dog(dog_name=dog_name, kennel_id=kennel_id, breed=breed, gender=gender, altered=altered, age=age, intake_date=intake_date)
+        dog = Dog(dog_name=dog_name, kennel_id=kennel_id, breed=breed, gender=gender, altered=altered, age=age, intake_date=intake_date, dog_pic=dog_pic)
 
         db.session.add(dog)
 
@@ -79,9 +79,9 @@ def load_kennel():
     for row in open("seed_data/kennel.txt"):
         row = row.strip()
         
-        kennel_id, dog_door, size, indoor = row.split("|")
+        dog_door, size, indoor = row.split("|")
    
-        kennel = Kennel(kennel_id=kennel_id, dog_door=dog_door, size=size, indoor=indoor)
+        kennel = Kennel(dog_door=dog_door, size=size, indoor=indoor)
 
         db.session.add(kennel)
 

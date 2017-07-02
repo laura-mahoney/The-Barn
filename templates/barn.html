@@ -143,7 +143,7 @@
 </div>
 
 <div class="addDogForm" style="display:none">
-    <form action="/adddog" method="POST">
+    <form action="/adddog" method="POST" enctype="multipart/form-data">
         <div class = "col col-mid-4" id="addDog">
             Name:<br>
             <input type="text" name="dog_name"><br>
@@ -163,7 +163,7 @@
             </select><br>
             Intake Date:<br>
             <input type="date" name="intake_date"><br><br>
-            <input id="uploaded_pic" type="file" accept="image/*" capture="camera"><br><br>
+            <input type="file" id="new_dog_pic" name="new_dog_pic" accept="image/*" capture="camera"><br><br>
             <input type="submit" id="pupdateButton" name="adddog" value="ADD DOG"><br>
         </div>
     </form>

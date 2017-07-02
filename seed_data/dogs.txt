@@ -1,15 +1,15 @@
-Lolo|1|American Pit Bull Terrier Mix|Female|True|4|05-Nov-2016
-Cooper|2|American Pit Bull Terrier Mix|Male|True|5|01-Nov-2016
-Chet|3|Husky|Male|True|3|23-Jan-2016
-Snorkles|4|American Staffordshire Terrier|Female|True|2|10-Oct-2016
-Zelda|5|Staffordshire Bull Terrier|Female|False|.25|15-Dec-2016
-Willis|6|American Staffordshire Terrier|Male|True|2|01-Sep-2016
-Zilla|5|American Pit Bull Terrier Mix/Bulldog|Female|True|3|12-Oct-2016
-Mila|8|American Pit Bull Terrier Mix|Female|True|3|1-Jul-2016
-Spot|8|American Pit Bull Terrier Mix/Lab|Male|False|.50|20-Oct-2016
-Matzo|9|American Pit Bull Terrier Mix/Bulldog|Male|True|4|1-Jul-2016
-Linus|9|American Pit Bull Terrier Mix/Bulldog|Male|True|6|10-May-2016
-Billie|10|Wolfdog Mix|Female|True|3|15-Aug-2014
-Freckles|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016
-Toby|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016
-Big Elf|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016
+Lolo|1|American Pit Bull Terrier Mix|Female|True|4|05-Nov-2016|static/images/Lolo.jpg
+Cooper|2|American Pit Bull Terrier Mix|Male|True|5|01-Nov-2016|static/images/Cooper.jpg
+Chet|3|Husky|Male|True|3|23-Jan-2016|static/images/Chet.jpg
+Snorkles|4|American Staffordshire Terrier|Female|True|2|10-Oct-2016|static/images/Snorkles.jpg
+Zelda|5|Staffordshire Bull Terrier|Female|False|.25|15-Dec-2016|static/images/Zelda.jpg
+Willis|6|American Staffordshire Terrier|Male|True|2|01-Sep-2016|static/images/Willis.jpg
+Zilla|5|American Pit Bull Terrier Mix/Bulldog|Female|True|3|12-Oct-2016|static/images/Zilla.jpg
+Mila|8|American Pit Bull Terrier Mix|Female|True|3|1-Jul-2016|static/images/Mila.jpg
+Spot|8|American Pit Bull Terrier Mix/Lab|Male|False|.50|20-Oct-2016|static/images/Spot.jpg
+Matzo|9|American Pit Bull Terrier Mix/Bulldog|Male|True|4|1-Jul-2016|static/images/Matzo.jpg
+Linus|9|American Pit Bull Terrier Mix/Bulldog|Male|True|6|10-May-2016|static/images/Linus.jpg
+Billie|10|Wolfdog Mix|Female|True|3|15-Aug-2014|static/images/Billie.jpg
+Freckles|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016|static/images/Freckles.jpg
+Toby|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016|static/images/Toby.jpg
+Big Elf|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016|static/images/Big elf.jpg
