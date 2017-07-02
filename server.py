@@ -13,13 +13,17 @@ from sqlalchemy import desc
 from json import loads 
 from werkzeug.utils import secure_filename #add
 
-UPLOAD_FOLDER = 'static/images/'
+# UPLOAD_FOLDER = 'static/images'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 
 app.secret_key = "hghghghg"
+
+APP_ROOT = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_FOLDER = os.path.join(APP_ROOT, r'static/images')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER #add
+
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
@@ -406,7 +410,7 @@ def add_dog():
         return redirect(request.url)
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER']))
+        file.save(os.path.join(app.config['UPLOAD_FOLDER']), filename)
      
 
     #creates a new kennel for the new dog
