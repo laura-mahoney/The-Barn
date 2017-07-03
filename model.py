@@ -241,10 +241,6 @@ def connect_to_db(app):
 
 
 
-def check_crew(email, password):
-    pass
-
-
 
 
 if __name__ == "__main__":

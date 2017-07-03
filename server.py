@@ -13,12 +13,12 @@ from sqlalchemy import desc
 from json import loads 
 from werkzeug.utils import secure_filename #add
 import bcrypt
-
+from flask.ext.heroku import Heroku
 # UPLOAD_FOLDER = 'static/images'
 ALLOWED_EXTENSIONS = set(['jpg'])
 
 app = Flask(__name__)
-
+heroku = Heroku(app)
 app.secret_key = "hghghghg"
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
