@@ -46,11 +46,12 @@
 }
 
 .mainBoard{
-  padding: 50px;
+  padding: 20px;
 }
 
 #dogPictures{
-  padding: 50px;
+  padding-left: 35px;
+  padding-right: 0px;
 
 }
 
@@ -90,7 +91,7 @@
 
 }
 
-.signin, .register {
+.signin {
   border: #efefef 3px solid;
   padding: 30px;
   border-radius: 15px;
@@ -98,10 +99,34 @@
   font-size: 24px;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
   font-family: 'Raleway', sans-serif;
-  margin-top: 200px;
-  margin-left:600px;
-  margin-right: 600px;
-  margin-left: 600px;
+  height: 400px;
+  width: 500px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  margin-top: 100px;
+  margin-left: -250px;
+  font-weight: bold;
+  opacity: .80;
+  text-align: center;
+
+}
+
+.register {
+  border: #efefef 3px solid;
+  padding: 30px;
+  border-radius: 15px;
+  background-color: #eaeaea;
+  font-size: 24px;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  font-family: 'Raleway', sans-serif;
+  height: 700px;
+  width: 500px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  margin-top: 100px;
+  margin-left: -250px;
   font-weight: bold;
   opacity: .80;
   text-align: center;
@@ -146,7 +171,7 @@ img.dogPicture:hover  {
   margin: 0;
   width: 100%;
   background-image: url("subtle_dots_@2X.png");
-  padding-bottom: 500px;
+  padding-bottom: 200px;
 
 
 }
