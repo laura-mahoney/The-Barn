@@ -2,14 +2,16 @@
 {% block content %}
 
 {% if "crew_id" not in session %}
+
 <a href="/register">
-    <img src="static/images/cover_photo.png" style="width:500px; height:500px; margin-top: 200px; margin-left:600px; margin-right: 600px; margin-left: 600px;">
+    <img src="static/images/cover_photo.png" id="coverphoto">
 </a>
+
 {% endif %}
 
 {% if "crew_id" in session %}
 <a href="/thebarn">
-    <img src="static/images/cover_photo.png" style="width:500px; height:500px; margin-top: 200px; margin-left:600px; margin-right: 600px; margin-left: 600px;">
+    <img src="static/images/cover_photo.png" id="coverphoto">
 </a>
 {% endif %}
 
