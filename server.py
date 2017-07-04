@@ -470,7 +470,7 @@ if __name__ == '__main__':
     
     app.jinja_env.auto_reload = app.debug
 
-    connect_to_db(app)
+    connect_to_db(app, os.environ.get('DATABASE_URL'))
 
     # DebugToolbarExtension(app)
     PORT = int(os.environ.get("PORT", 5000))

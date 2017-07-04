@@ -229,11 +229,11 @@ def init_app():
 
 
 
-def connect_to_db(app):
+def connect_to_db(app, db_uri=None):
     """Connect the database to Flask app."""
 
     # Configure to use database.
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres:///thebarn'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri or 'postgres:///thebarn'
     app.config['SQLALCHEMY_ECHO'] = False
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
