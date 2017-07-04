@@ -12,4 +12,4 @@ Linus|9|American Pit Bull Terrier Mix/Bulldog|Male|True|6|10-May-2016|static/ima
 Billie|10|Wolfdog Mix|Female|True|3|15-Aug-2014|static/images/Billie.jpg
 Freckles|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016|static/images/Freckles.jpg
 Toby|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016|static/images/Toby.jpg
-Big Elf|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016|static/images/Big elf.jpg
+Big-Elf|11|American Pit Bull Terrier Mix|Male|False|.25|10-Jun-2016|static/images/Big-Elf.jpg
