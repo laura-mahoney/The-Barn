@@ -45,7 +45,7 @@ def index_page():
 def login():
     """ Loggin In With Facebook"""
     authorization_url, state = facebook.authorization_url(authorization_base_url)
-    print 'Please authorize', authorization_url
+    print('Please authorize', authorization_url)
 
     return redirect(authorization_url, code=302)
 
@@ -61,8 +61,8 @@ def facebook_auth():
     if not is_valid_state(state):
         abort(403)
     code = request.args.get('code')
-    print 20 * '*'
-    print code
+    print(20 * '*')
+    print(code)
     
     facebook.fetch_token(token_url, APP_SECRET=APP_SECRET, authorization_response="http://localhost:5000/process_login?code="+code+"&state"+state)
 

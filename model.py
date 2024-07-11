@@ -213,12 +213,11 @@ class Dogplaymates(db.Model):
     def __repr__(self):
         return "<Dog ID: dog_id=%s Playmate1: play_mate1=%s Playmate2: play_mate2=%s>" % (self.dog_id, self.play_mate1, self.play_mate2)
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    id = db.Column(db.Integer, db.Sequence('dogplaymates_id_seq'), primary_key=True)
     shift_id = db.Column(db.Integer, db.ForeignKey("shift.shift_id"), primary_key=True)
     dog_id = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=False)
     play_mate1 = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
     play_mate2 = db.Column(db.Integer, db.ForeignKey("dog.dog_id"), nullable=True)
-
 
 def init_app():
     # Makes flask app to use Flask-SQLAlchemy.
@@ -226,7 +225,7 @@ def init_app():
     app = Flask(__name__)
 
     connect_to_db(app)
-    print "Connected to The Barn DB."
+    print("Connected to The Barn DB.")
 
 
 
@@ -234,15 +233,11 @@ def connect_to_db(app, db_uri=None):
     """Connect the database to Flask app."""
 
     # Configure to use database.
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri or 'postgres:///thebarn'
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri or 'postgresql:///thebarn'
     app.config['SQLALCHEMY_ECHO'] = False
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
-
-
-
-
 
 if __name__ == "__main__":
   
@@ -252,7 +247,7 @@ if __name__ == "__main__":
     app = Flask(__name__)
 
     connect_to_db(app)
-    print "Connected to The Barn DB."
+    print("Connected to The Barn DB.")
 
     # cascade="all, delete-orphan" add to foregin keys
     # http://docs.sqlalchemy.org/en/latest/orm/cascades.html

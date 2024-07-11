@@ -54,11 +54,10 @@ def register_process():
 
     email = request.form["email"]
     password = request.form["password"]
-    hashed_password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt(12)) 
+    hashed_password = bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt()).decode('utf8')
 
     fname = request.form["fname"]
     lname = request.form["lname"]
-
     user_exists = Barncrew.query.filter_by(email=email).first()
     
     if user_exists is not None: 
@@ -97,7 +96,11 @@ def sign_in_process():
         flash("Barncrew Member Does Not Exist", 'error')
         return redirect("/sign_in")
 
-    if bcrypt.checkpw(password.encode('utf8'), crew.password.encode('utf8')):
+    # convert hashed password back to bytes, compare it with form provided password
+    hashed_password = crew.password.encode('utf8')
+
+    if bcrypt.checkpw(password.encode('utf8'), hashed_password):
+
 
         session["crew_id"] = crew.crew_id
         
@@ -180,6 +183,7 @@ def dog_form():
     dog_id = request.form.get("dog-id")
     dog = Dog.query.get(dog_id)
     shift_id = request.form.get("shift-id")
+    print(shift_id)
     notes = request.form.get("pupdatenotes")
 
     dogmountain = request.form.get("dogmountain")
@@ -212,10 +216,10 @@ def dog_form():
 
     new_playmate = Dogplaymates(shift_id=shift_id, dog_id=dog_id, play_mate1=play_mate1, play_mate2=play_mate2)
 
-
     db.session.add(new_notes)
     db.session.add(new_activity)
     db.session.add(new_command)
+    db.session.commit()
     db.session.add(new_playmate)
     db.session.commit()
 
@@ -232,7 +236,6 @@ def dog_form():
     my_dictionary = {"message": "notes succesfully added"}
 
     return jsonify(my_dictionary)
-
 
 
 @app.route('/submitnotes', methods=['POST'])
@@ -283,7 +286,7 @@ def get_reports():
     #current dog's id and name 
     current_id = request.form.get('currentDogId')
     current_name = Dog.query.get(current_id).dog_name
-    print current_name 
+    print(current_name)
 
     #querying for the current dog's playmates 
     dog_playmates = Dogplaymates.query.filter_by(dog_id=current_id).all()
@@ -378,7 +381,7 @@ def get_reports():
 
             dog_nodes.append(dog_names)
 
-    print dog_nodes
+    print(dog_nodes)
 
     #links are just indices based on the length of the dog nodes
     dog_links = []
@@ -386,7 +389,7 @@ def get_reports():
         link = {'source': 0, 'target': i}
         dog_links.append(link)
 
-    print dog_links  
+    print(dog_links)
     
     return jsonify({'dog_nodes': dog_nodes, 'dog_links': dog_links, 'command_data': command_data})
 
@@ -429,7 +432,7 @@ def add_dog():
             return redirect('/thebarn')
 
     file = request.files['new_dog_pic']
-    print type(file)
+    print(type(file))
 
     if file.filename == '':
         flash('Please Upload a Photo', 'error')
@@ -439,7 +442,7 @@ def add_dog():
     file_arrary = file.filename.split(".")
     file.filename = dog_name + "." + file_arrary[-1]
 
-    print file.filename 
+    print(file.filename)
     # if user does not select file, browser also
     # submit a empty part without filename
 
@@ -480,3 +483,24 @@ if __name__ == '__main__':
     app.run(host="0.0.0.0", port=PORT, debug=DEBUG)
 
 
+# import os
+# from flask import Flask
+# from model import connect_to_db
+
+# app = Flask(__name__)
+
+# # Print DATABASE_URL to verify it is set correctly
+# print("DATABASE_URL:", os.environ.get('DATABASE_URL'))
+
+# # Import SQLAlchemy and other components after the app is created
+# from flask_sqlalchemy import SQLAlchemy
+# ...
+
+# if __name__ == '__main__':
+#     connect_to_db(app, os.environ.get('DATABASE_URL'))
+#     app.run(debug=True)
+
+
+# postgres:///thebarn
+
+# export DATABASE_URL=postgresql:///thebarn
