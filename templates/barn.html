@@ -6,7 +6,7 @@
     <br>Welcome to The Barn, {{ crew.fname }}
 </div>
 
-<div class="recentAddNotes row col-md-9">
+<div class="recentAddNotes row col-md-6">
     Latest Notes from {{ recent_notes.date_time }}:<br><br>{{ recent_notes.notes }}<br>
     <br>
     <br>
@@ -121,52 +121,53 @@
 <br>
 <div class="mainBoard row">
     <div class="row col-md-6" id="dogPictures">
-    {% for dog in dogs %}
-
-       <div>
-            <p class="dogProfile" data-dog="{{ dog.dog_id }}" style="display: none">{{ dog.dog_name }}</p>
-       </div>
-       
-       <img src= "static/images/{{ dog.dog_name }}.jpg" id="dogp{{ dog.dog_id }}" class="dogPicture col-md-2" data-dog="{{ dog.dog_id }}">
-
-    {% endfor %}
         <img src="static/images/plus_sign.jpg" class="dogPicture col-md-2" id="plus">
+        {% for dog in dogs %}
+
+        <div>
+                <p class="dogProfile" data-dog="{{ dog.dog_id }}" style="display: none">{{ dog.dog_name }}</p>
+        </div>
+        
+        <img src= "static/images/{{ dog.dog_name }}.jpg" id="dogp{{ dog.dog_id }}" class="dogPicture col-md-2" data-dog="{{ dog.dog_id }}">
+
+        {% endfor %}
 
     </div>
 
-    <div class="row col-md-6">
-        <div id="intakeData"></div>
-        <div id="dogData">
-            <canvas class="dogCommandsGraph" id="comChart" width="200" height="200"></canvas>
+    <div class="addDogForm row col-md-6" style="display:none">
+        <form action="/adddog" method="POST" enctype="multipart/form-data">
+            <h2>Intake Form</h2>
+            <div class = "col col-mid-4" id="addDog">
+                Name:<br>
+                <input type="text" name="dog_name"><br>
+                Breed:<br>
+                <input type="text" name="breed"><br>
+                Age:<br>
+                <input type="number" name="age"><br>
+                <select name="gender">
+                    <option>Gender</option>
+                    <option value="Female">Female</option>
+                    <option value="Male">Male</option>
+                </select>
+                <select name="altered">
+                    <option>Altered</option>
+                    <option value=true>Yes</option>
+                    <option value=false>No</option>
+                </select><br>
+                Intake Date:<br>
+                <input type="date" name="intake_date"><br><br>
+                <input type="file" id="new_dog_pic" name="new_dog_pic" accept="image/*" capture="camera"><br><br>
+                <input type="submit" id="pupdateButton" name="adddog" value="ADD DOG"><br>
+            </div>
+        </form>
+        <div class="row col-md-6">
+            <div id="intakeData"></div>
+            <div id="dogData">
+                <canvas class="dogCommandsGraph" id="comChart" width="200" height="200"></canvas>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="addDogForm" style="display:none">
-    <form action="/adddog" method="POST" enctype="multipart/form-data">
-        <div class = "col col-mid-4" id="addDog">
-            Name:<br>
-            <input type="text" name="dog_name"><br>
-            Breed:<br>
-            <input type="text" name="breed"><br>
-            Age:<br>
-            <input type="number" name="age"><br>
-            <select name="gender">
-                <option>Gender</option>
-                <option value="Female">Female</option>
-                <option value="Male">Male</option>
-            </select>
-            <select name="altered">
-                <option>Altered</option>
-                <option value=true>Yes</option>
-                <option value=false>No</option>
-            </select><br>
-            Intake Date:<br>
-            <input type="date" name="intake_date"><br><br>
-            <input type="file" id="new_dog_pic" name="new_dog_pic" accept="image/*" capture="camera"><br><br>
-            <input type="submit" id="pupdateButton" name="adddog" value="ADD DOG"><br>
-        </div>
-    </form>
-</div>
 
 {% endblock %}
